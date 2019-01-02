@@ -1,0 +1,114 @@
+.weui-tabbar{
+  background: #2C4962;
+  position: fixed;
+  max-width: 768px;
+}
+.weui-tabbar:before{
+  border: none;
+}
+.weui-tabbar__label{
+  color: #FFFFFF;
+  opacity: 0.8;
+}
+.weui-tabbar__icon{
+  width: 14px;
+  height: 14px;
+  padding: 7px;
+}
+.weui-tabbar__item.weui-bar__item_on .weui-tabbar__icon, .weui-tabbar__item.weui-bar__item_on .weui-tabbar__icon > i, .weui-tabbar__item.weui-bar__item_on .weui-tabbar__label {
+  color: #F9AA44;;
+}
+.weui-progress__bar{
+  background-color: #2D4757;
+  height: 8px;
+  border-radius: 4px;
+}
+.weui-progress__inner-bar{
+  border-radius: 4px;
+}
+.weui-btn_buy {
+  background-color: #14BC63;
+}
+.weui-btn_sell {
+  background-color: #F87070;
+}
+.weui-btn_none {
+  background-color: #c3c3c3;
+}
+.weui-btn.block{
+  display: block;
+  padding: 2px 0px;
+}
+.weui-search-bar{
+  background-color: #1F3548;
+}
+.searchbar-result{
+  background-color: #1F3548;
+}
+.weui-search-bar__label{
+  background-color: #182937;
+  line-height: 40px;
+}
+.weui-search-bar:before{
+  border: 1px solid #182937;
+}
+.weui-search-bar:after{
+  border-bottom: 1px solid #182937;
+}
+.weui-search-bar__form{
+  background-color: #182937;
+}
+.weui-search-bar__form:after{
+  border: 1px solid #182937;
+}
+.weui-search-bar__box{
+  background-color: #182937;
+  border-radius: 4px;
+}
+.weui-cells{
+  background: transparent;
+}
+.weui-cells:before{
+  border: none;
+}
+.weui-cells:after{
+  border: none;
+}
+.weui-cell_access{
+  -webkit-tap-highlight-color: transparent;
+  color: #FFFFFF;
+}
+.weui-cell_access:hover{
+  background: #18262e;
+}
+.weui-cell:before{
+  border: none;
+}
+.weui-cell:after{
+  border: none;
+}
+.weui-dialog__bd{
+  text-align: left;
+}
+.weui-agree__checkbox{
+  background: transparent;
+}
+.weui-switch{
+  height: 24px;
+  width: 40px;
+  vertical-align: middle;
+}
+.weui-switch:after{
+  height: 22px;
+  width: 22px;
+  border-radius: 11px;
+}
+.weui-switch:before{
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+}
+.weui-switch:checked{
+  background-color: #1F3548;
+  border-color: #1F3548;
+}

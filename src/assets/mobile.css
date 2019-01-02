@@ -1,0 +1,33 @@
+html,body{
+  /*height: 100%;*/
+  font-size: 100%;
+}
+body{
+  background: #162C39;
+  -webkit-text-size-adjust: 100% !important;
+  -moz-text-size-adjust: 100% !important;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .1s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.actionBox .el-input-group>.el-input__inner{
+  border: 1px solid #466E91;
+  color: #fff;
+  outline: none;
+}
+.actionBox .el-input-group>.el-input__inner:hover{
+  border-color: #466E91;
+}
+.actionBox .el-input-group>.el-input-group__append, .actionBox .el-input-group>.el-input-group__prepend {
+  border: 1px solid #466E91;
+  /*background-color: #f5f7fa;*/
+}
+.swiper-pagination-bullet{
+  background-color: rgb(255,255,255) !important;
+}
+.swiper-pagination-bullet-active{
+  background-color: rgba(255,255,255,0.5) !important;
+}
