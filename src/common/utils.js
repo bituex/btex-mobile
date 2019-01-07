@@ -101,5 +101,4 @@ export default {
   httpEndpoint: '',
   network: null,
   host: ''
-  // host: 'http://btex.rajasoft.cn'
 };

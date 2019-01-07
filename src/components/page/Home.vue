@@ -378,11 +378,11 @@
             let baseTokens = Enumerable.from(this.basetokens).where(function (x) {
               return x.sym_name === 'EOS';
             }).toArray();
-            showList = Enumerable.from(showList).where(function (x) {
+            let coinALL = Enumerable.from(coinInfo).where(function (x) {
               return x.base_id === baseTokens[0].id;
             }).toArray();
-            showList.unshift({contractName: 'eosio.token', asset_symbol: 'EOS', newPrice: 1, asset_precision: 4, currencyId: 0});
-            EOSUtil.getTotalEos(this.account.name, showList, function (err, blances) {
+            coinALL.unshift({contractName: 'eosio.token', asset_symbol: 'EOS', newPrice: 1, asset_precision: 4, currencyId: 0});
+            EOSUtil.getTotalEos(this.account.name, coinALL, function (err, blances) {
               if (err) {
                 // that.weui.alert(err, {
                 //   buttons: [{
