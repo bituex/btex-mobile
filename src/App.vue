@@ -14,7 +14,8 @@ export default {
   name: 'App',
   created () {
     // 设置用户的语言
-    let lang = navigator.language || navigator.userLanguage;
+    console.log(util.getUrlParam('locale'));
+    let lang = util.getUrlParam('locale') || navigator.language || navigator.userLanguage;
     lang = lang.substr(0, 2);
     this.$store.dispatch('setLang', lang);
     if (lang === 'zh') {
