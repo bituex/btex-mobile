@@ -1,8 +1,11 @@
 # btex-mobile
 
-> A Vue.js project
+> This UI code is btex online version.
+> Deploy your own de-centralized exchanges with code.
 
 ## Build Setup
+
+* install nodejs
 
 ``` bash
 # install dependencies
