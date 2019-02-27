@@ -60,6 +60,19 @@
             </div>
           </div>
         </div>
+        <div class="bituex">
+          <div class="transfer">
+            <div class="actions">
+              <div class="action-txt">EOS/USDT/BT</div>
+              <div class="trans-action" @click="toWithDraw">{{$t("message.transfer")}}Bituex</div>
+            </div>
+            <p class="intro">USDT跨链兑换、在线买卖管理EOS资产</p>
+          </div>
+          <div class="upcoin" @click="toUpCoin">
+            <img src="../../assets/img/upcoinicon.png"/>
+            <p class="upcoin-title">{{$t("message.up_coin_self")}}</p>
+          </div>
+        </div>
         <div class="coins-title">
           <div class="txt">{{$t("message.increase_list")}}</div>
           <div class="txt">TOP10</div>
@@ -112,9 +125,6 @@
         marqueeList: [],
         animate: false,
         // 页面数据
-        // tabCurrent: 'home',
-        // scatter: this.$store.getters.scatter,
-        // identity: this.$store.getters.identity,
         account: {name: ''},
         accountInfo: null,
         cpuLimit: 0,
@@ -189,6 +199,12 @@
       },
       toMarketChart(id) {
         this.$router.push('/market/chart/' + id);
+      },
+      toUpCoin() {
+        this.$router.push('/upcoin');
+      },
+      toWithDraw() {
+        this.$router.push('/withdraw');
       },
       goMarket() {
         this.$router.push('/market');
@@ -384,12 +400,6 @@
             coinALL.unshift({contractName: 'eosio.token', asset_symbol: 'EOS', newPrice: 1, asset_precision: 4, currencyId: 0});
             EOSUtil.getTotalEos(this.account.name, coinALL, function (err, blances) {
               if (err) {
-                // that.weui.alert(err, {
-                //   buttons: [{
-                //     label: that.$t('message.confirm'),
-                //     type: 'primary'
-                //   }]
-                // });
                 that.$message({
                   type: 'error',
                   text: err,
@@ -397,10 +407,8 @@
                 });
               } else {
                 that.$store.dispatch('setBlances', blances);
-                // console.log(blances);
                 let valuation = Enumerable.from(blances)
                   .select(o => o.valuation).sum();
-                // console.log(valuation);
                 that.valuation = valuation.toFixed(4);
               }
               that.loadingValuation = false;
@@ -626,6 +634,52 @@
                   padding: 8px 0px;
                 }
               }
+            }
+          }
+        }
+        .bituex{
+          margin-top: 4px;
+          display: flex;
+          .transfer{
+            background-color: #1F3547;
+            padding: 15px;
+            flex: 1;
+            .actions{
+              display: flex;
+              justify-content: space-between;
+              .action-txt{
+                font-size: 16px;
+                color: #FFFFFF;
+              }
+              .trans-action{
+                background: #47A9FF;
+                border-radius: 15.5px;
+                color: #ffffff;
+                font-size: 12px;
+                padding: 4px 8px;
+              }
+            }
+            .intro{
+              padding-top: 6px;
+              font-size: 12px;
+              color: #5A81A3;
+            }
+          }
+          .upcoin{
+            background-color: #1F3547;
+            margin-left: 4px;
+            padding: 15px;
+            img{
+              width: 30px;
+              height: 30px;
+              display: block;
+              margin: 0 auto;
+            }
+            .upcoin-title{
+              font-size: 12px;
+              color: #FFFFFF;
+              text-align: center;
+              padding-top: 6px;
             }
           }
         }

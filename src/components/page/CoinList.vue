@@ -2,7 +2,7 @@
   <div id="master">
     <div class="page">
       <div class="add-coin">
-        <button class="weui-btn" @click="addCoinAction">自主上币</button>
+        <button class="weui-btn" @click="addCoinAction">{{$t("message.up_coin_self")}}</button>
       </div>
       <div class="coins">
         <div class="coin" v-for="(item,index) in coins" :key="index">
