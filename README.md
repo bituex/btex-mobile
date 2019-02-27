@@ -1,9 +1,19 @@
 # btex-mobile
 
-> A Vue.js project
+> This UI code is btex online version.   
+> Deploy your own decentralized exchange with code.
 
-## Build Setup
+You must install [nodejs](https://nodejs.org) first.
 
+## Setup
+### 1.Download
+### 2.Configure
+Navigate to /src/common/utils.js modify host value, this url is to get K-line data. You can draw your own K-line chart by monitoring to the EOS transaction records of btexexchange.
+```
+host: 'https://www.btex.org'
+```
+### 3.Build
+In the code root directory run
 ``` bash
 # install dependencies
 npm install
@@ -17,5 +27,8 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
+### 4.Deploy
+If you `npm run build` will create */dist* directory in root, copy to you website then decentralized exchange is deploy.
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+If you have any questions, please contact us.   
+Telegram [@BTEX](https://t.me/btex)
