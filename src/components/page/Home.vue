@@ -656,7 +656,7 @@
                 border-radius: 15.5px;
                 color: #ffffff;
                 font-size: 12px;
-                padding: 4px 8px;
+                padding: 2px 10px;
               }
             }
             .intro{
