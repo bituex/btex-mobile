@@ -48,7 +48,7 @@
         </div>
         <div class="form-group" style="margin-top: 80px">
           <p class="notice">标签(MEMO)可在注册Bituex后充币页面查看</p>
-          <p class="bituexwebsite"><a href="https://www.bituex.com">EOS、USDT、BT交易首选交易所——Bituex</a></p>
+          <p class="bituexwebsite"><a href="https://hema.im/bituex">EOS、USDT、BT法币首选交易所——立即下载Bituex</a></p>
         </div>
         <button type="submit" @click="onSubmit" class="weui-btn weui-btn_default yellow" style="">{{$t("message.submit")}}</button>
       </div>
@@ -394,7 +394,7 @@
       .weui-btn.yellow {
         background-color: #F9AA44;
         color: #ffffff;
-        font-size: 14px;
+        font-size: 16px;
       }
       .weui-btn.yellow:active{
         background-color: #f69c28;

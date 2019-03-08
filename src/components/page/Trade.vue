@@ -1327,8 +1327,6 @@
       };
     },
     created() {
-      // 设置标题
-      // document.title = this.$t('message.trade');
       // 获取账号详情
       if (this.identity) {
         let account = this.identity.accounts.find(x => x.blockchain === 'eos');

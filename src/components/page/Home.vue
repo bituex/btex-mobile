@@ -63,14 +63,31 @@
         <div class="bituex">
           <div class="transfer">
             <div class="actions">
-              <div class="action-txt">EOS/USDT/BT</div>
-              <div class="trans-action" @click="toWithDraw">{{$t("message.transfer")}}Bituex</div>
+              <div class="action-txt">快捷法币交易</div>
+              <div class="trans-action" @click="toWithDraw">{{$t("message.transfer")}} Bituex</div>
             </div>
             <p class="intro">USDT跨链兑换、在线买卖管理EOS资产</p>
           </div>
           <div class="upcoin" @click="toUpCoin">
             <img src="../../assets/img/upcoinicon.png"/>
             <p class="upcoin-title">{{$t("message.up_coin_self")}}</p>
+          </div>
+        </div>
+        <div class="kuai1">
+          <div class="usdt" @click="goTradeUsdt">
+            <div class="first">
+              <span class="usdt-eos">EOS/USDT</span>
+              <span class="chg">{{usdtChange === null ? ('0.00 %') :
+                (usdtChange+'%')}}</span>
+            </div>
+            <p class="intro">{{$t("message.steady_currency_trading")}}</p>
+          </div>
+          <div class="bouns" @click="goBouns">
+            <img src="../../assets/img/bouns.png"/>
+            <div class="right">
+              <p class="boun">{{$t("message.mortgage_to_get_dividends")}}</p>
+              <p class="rate">{{$t("message.annualized_return")}} {{yieldRate}}%</p>
+            </div>
           </div>
         </div>
         <div class="coins-title">
@@ -102,11 +119,12 @@
 </template>
 
 <script>
+  import Eos from 'eosjs';
   import Swiper from 'swiper';
   import Enumerable from 'linq';
   import WeuiProgress from '../weui/WeuiProgress';
   import EOSUtil from '../../common/EosUtils';
-  import {mapState} from 'vuex';
+  // import {mapState} from 'vuex';
 
   export default {
     name: 'Home',
@@ -132,7 +150,17 @@
         coinInfo: [],
         valuation: 0,
         loading: false,
-        loadingValuation: false
+        loadingValuation: false,
+        // 总抵押
+        mortgageBt: 0,
+        // 链上Indexes表数据
+        indexesData: {
+          bonus_pool_eos: 0,
+          bonus_history_eos: 0,
+          mortgage_history_bt: 0
+        },
+        btPrice: 0,
+        usdtChange: 0
       };
     },
     components: {
@@ -199,6 +227,12 @@
       },
       toMarketChart(id) {
         this.$router.push('/market/chart/' + id);
+      },
+      goTradeUsdt() {
+        this.$router.push('/trade/100000000000000000');
+      },
+      goBouns() {
+        this.$router.push('/invest');
       },
       toUpCoin() {
         this.$router.push('/upcoin');
@@ -375,6 +409,14 @@
             coinInfo[i].tradable = false;
             coinInfo[i].icon = '';
           }
+          // 获取BT 价格
+          if (coinInfo[i].currencyId === '154114185766125772') {
+            this.btPrice = coinInfo[i].newPrice;
+          }
+          // 获取USDT 涨跌幅
+          if (coinInfo[i].currencyId === '100000000000000000') {
+            this.usdtChange = coinInfo[i].change;
+          }
         }
         let showList = Enumerable.from(coinInfo).where(function (x) {
           return x.tradable && x.volume > 0;
@@ -450,17 +492,81 @@
         } else {
           return '';
         }
+      },
+
+      // 获取总抵押BT数据
+      getTotalMortgage() {
+        var that = this;
+        let options = {
+          httpEndpoint: this.selfUtil.httpEndpoint
+        };
+        let eos = Eos(options);
+        eos.getCurrencyBalance('eosbtextoken', 'eosbtexbonus', 'BT').then(function (e) {
+          if (e.length > 0) {
+            let btNum = e[0].toString().split(' ')[0];
+            that.mortgageBt = btNum;
+          } else {
+            that.mortgageBt = 0;
+          }
+        });
+      },
+      // 获取系统表统计数据
+      getIndexesData() {
+        var that = this;
+        var params = {'scope': 'eosbtexbonus', 'code': 'eosbtexbonus', 'table': 'indexes', 'json': 'true', 'limit': 1, 'lower_bound': 0};
+        EOSUtil.getTableRow(params, function (rows) {
+          if (rows && rows.length > 0) {
+            that.indexesData.bonus_pool_eos = rows[0].bonus_pool_eos.toString().split(' ')[0];
+            that.indexesData.bonus_history_eos = rows[0].bonus_history_eos.toString().split(' ')[0];
+            that.indexesData.mortgage_history_bt = rows[0].mortgage_history_bt.toString().split(' ')[0];
+          }
+        });
       }
     },
-    computed: mapState({
-      identity: state => state.identity,
-      basetokens: state => state.basetokens,
-      contractCoins: state => state.contractCoins,
-      serverCoins: state => state.serverCoins,
-      blances: state => state.blances,
-      banners: state => state.banners,
-      notices: state => state.notices
-    }),
+    computed: {
+      identity() {
+        return this.$store.state.identity;
+      },
+      basetokens () {
+        return this.$store.state.basetokens;
+      },
+      contractCoins () {
+        return this.$store.state.contractCoins;
+      },
+      serverCoins () {
+        return this.$store.state.serverCoins;
+      },
+      blances () {
+        return this.$store.state.blances;
+      },
+      banners () {
+        return this.$store.state.banners;
+      },
+      notices () {
+        return this.$store.state.notices;
+      },
+      indexNum() {
+        let mortgageBtF = parseFloat(this.mortgageBt);
+        let eosF = parseFloat(this.indexesData.bonus_pool_eos);
+        if (mortgageBtF > 0 && eosF > 0) {
+          let incomeEos = (10000 / mortgageBtF) * (1 / 180) * eosF;
+          return incomeEos.toFixed(4);
+        } else {
+          return 0;
+        }
+      },
+      // 年化收益率
+      yieldRate() {
+        if (this.btPrice === 0) {
+          return '--';
+        } else {
+          console.log(this.indexNum);
+          console.log(this.btPrice);
+          let lva = ((this.indexNum * 365) / (10000 * this.btPrice) * 100);
+          return parseFloat(lva).toFixed(2);
+        }
+      }
+    },
     created() {
       // 设置标题
       // document.title = this.$t('message.btex');
@@ -488,6 +594,9 @@
       } else {
         this.getCoins();
       }
+      // 获取抵押数据
+      this.getIndexesData();
+      this.getTotalMortgage();
     },
     beforeDestroy() {
       window.clearInterval(this.marqueeIntever);
@@ -656,11 +765,12 @@
                 border-radius: 15.5px;
                 color: #ffffff;
                 font-size: 12px;
-                padding: 2px 10px;
+                padding: 0px 10px;
+                line-height: 25px;
               }
             }
             .intro{
-              padding-top: 6px;
+              padding-top: 10px;
               font-size: 12px;
               color: #5A81A3;
             }
@@ -668,10 +778,10 @@
           .upcoin{
             background-color: #1F3547;
             margin-left: 4px;
-            padding: 15px;
+            padding: 15px 30px;
             img{
-              width: 30px;
-              height: 30px;
+              width: 25px;
+              height: 25px;
               display: block;
               margin: 0 auto;
             }
@@ -679,7 +789,60 @@
               font-size: 12px;
               color: #FFFFFF;
               text-align: center;
-              padding-top: 6px;
+              padding-top: 10px;
+            }
+          }
+        }
+        .kuai1{
+          margin-top: 4px;
+          display: flex;
+          .usdt{
+            background-color: #1F3547;
+            padding: 15px;
+            flex: 1;
+            .first{
+              .usdt-eos{
+                font-size: 16px;
+                color: #FFFFFF;
+              }
+              .chg{
+                font-size: 14px;
+                color: #5AB36D;
+              }
+            }
+            .intro{
+              padding-top: 8px;
+              font-size: 12px;
+              color: #5A81A3;
+            }
+          }
+          .bouns{
+            background-color: #1F3547;
+            margin-left: 4px;
+            flex: 1;
+            padding: 20px 15px;
+            display: flex;
+            align-items: center;
+            img{
+              width: 25px;
+            }
+            .right{
+              display: inline-block;
+              flex: 1;
+              p{
+                /*padding: 5px 0px 5px 5px;*/
+                /*line-height: 1em;*/
+                padding-left: 10px;
+              }
+              .boun{
+                font-size: 12px;
+                color: #FFFFFF;
+              }
+              .rate{
+                font-size: 12px;
+                color: #5A81A3;
+                padding-top: 10px;
+              }
             }
           }
         }

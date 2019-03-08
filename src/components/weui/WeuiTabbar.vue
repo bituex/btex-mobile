@@ -1,39 +1,38 @@
 <template>
   <div class="weui-tabbar">
-    <a href="javascript:;" @click="selectAction('home')" class="weui-tabbar__item" :class="{'weui-bar__item_on': currentSelect=='home'}">
+    <router-link to = "/home" class = "weui-tabbar__item" active-class = "weui-bar__item_on">
       <span style="display: inline-block;position: relative;">
           <img src="./custom_img/icon_home_on.png" v-if="currentSelect=='home'" alt="" class="weui-tabbar__icon">
           <img src="./custom_img/icon_home.png" v-else alt="" class="weui-tabbar__icon">
           <!--<span class="weui-badge" style="position: absolute;top: -2px;right: -13px;">8</span>-->
       </span>
       <p class="weui-tabbar__label">{{$t("message.home")}}</p>
-    </a>
-    <a href="javascript:;" @click="selectAction('market')" class="weui-tabbar__item" :class="{'weui-bar__item_on': currentSelect=='market'}">
+    </router-link>
+    <router-link to = "/market" class = "weui-tabbar__item" active-class = "weui-bar__item_on">
       <img src="./custom_img/icon_market_on.png" v-if="currentSelect=='market'" alt="" class="weui-tabbar__icon">
       <img src="./custom_img/icon_market.png" v-else alt="" class="weui-tabbar__icon">
       <p class="weui-tabbar__label">{{$t("message.market")}}</p>
-    </a>
-    <a href="javascript:;" @click="selectAction('trade')" class="weui-tabbar__item" :class="{'weui-bar__item_on': currentSelect=='trade'}">
+    </router-link>
+    <router-link :to = "tradeUrl" class = "weui-tabbar__item" active-class = "weui-bar__item_on" :class="{'weui-bar__item_on': currentSelect=='trade'}">
       <span style="display: inline-block;position: relative;">
           <img src="./custom_img/icon_trade_on.png" v-if="currentSelect=='trade'" alt="" class="weui-tabbar__icon">
           <img src="./custom_img/icon_trade.png" v-else alt="" class="weui-tabbar__icon">
           <!--<span class="weui-badge weui-badge_dot" style="position: absolute;top: 0;right: -6px;"></span>-->
       </span>
       <p class="weui-tabbar__label">{{$t("message.trade")}}</p>
-    </a>
-    <a href="javascript:;" @click.prevent="selectAction('invest')" class="weui-tabbar__item" :class="{'weui-bar__item_on': currentSelect=='invest'}">
+    </router-link>
+    <router-link to = "/invest" class = "weui-tabbar__item" active-class = "weui-bar__item_on">
       <span style="display: inline-block;position: relative;">
           <img src="./custom_img/icon_invest_on.png" v-if="currentSelect=='invest'" alt="" class="weui-tabbar__icon">
           <img src="./custom_img/icon_invest.png" v-else alt="" class="weui-tabbar__icon">
-        <!--<span class="weui-badge weui-badge_dot" style="position: absolute;top: 0;right: -6px;"></span>-->
       </span>
       <p class="weui-tabbar__label">{{$t("message.bonus")}}</p>
-    </a>
-    <a href="javascript:;" @click.stop="selectAction('my')" class="weui-tabbar__item" :class="{'weui-bar__item_on': currentSelect=='my'}">
+    </router-link>
+    <router-link to = "/my" class = "weui-tabbar__item" active-class = "weui-bar__item_on">
       <img src="./custom_img/icon_my_on.png" v-if="currentSelect=='my'" alt="" class="weui-tabbar__icon">
       <img src="./custom_img/icon_my.png" v-else alt="" class="weui-tabbar__icon">
       <p class="weui-tabbar__label">{{$t("message.my")}}</p>
-    </a>
+    </router-link>
   </div>
 </template>
 
@@ -42,28 +41,37 @@ export default {
   name: 'WeuiTabbar',
   data: function () {
     return {
-      currentSelect: 'home'
+      currentSelect: '',
+      tradeUrl: '/trade'
     };
   },
   props: ['tabCurrent'],
   methods: {
-    selectAction (key) {
-      this.currentSelect = key;
-      console.log(key);
-      if (key === 'trade') {
-        let currencyId = window.localStorage.getItem('currencyId');
-        if (currencyId) {
-          this.$router.replace('/' + key + '/' + currencyId);
-        } else {
-          this.$router.replace('/' + key);
-        }
+  },
+  watch: {
+    $route(to, from) {
+      var path = to.path;
+      console.log(path);
+      if (path.indexOf('/market') !== -1) {
+        this.currentSelect = 'market';
+      } else if (path.indexOf('/trade') !== -1) {
+        this.tradeUrl = path;
+        this.currentSelect = 'trade';
+      } else if (path.indexOf('/invest') !== -1) {
+        this.currentSelect = 'invest';
+      } else if (path.indexOf('/my') !== -1) {
+        this.currentSelect = 'my';
       } else {
-        this.$router.replace('/' + key);
+        this.currentSelect = 'home';
       }
     }
   },
   created() {
     this.currentSelect = this.tabCurrent;
+    let currencyId = window.localStorage.getItem('currencyId');
+    if (currencyId) {
+      this.tradeUrl = '/trade/' + currencyId;
+    }
   }
 };
 </script>

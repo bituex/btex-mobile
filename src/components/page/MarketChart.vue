@@ -313,9 +313,11 @@
       goTrade(tradeType) {
         // window.location.href = '/#/m/trade/info';
         if (this.currencyId !== '') {
+          // this.$router.replace();
           this.$router.replace('/trade/' + this.currencyId + '/' + tradeType);
         } else {
-          this.$router.replace('/trade/');
+          // this.$router.replace('/trade/');
+          this.$router.replace('/trade');
         }
       },
       // 获取最近交易
