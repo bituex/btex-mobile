@@ -1,6 +1,6 @@
 <template>
-  <div id="master">
-    <div class="page">
+  <div id="master" :class="theme === 'light' ? 'light' : 'dark'">
+    <div class="page" >
       <div class="user-order" v-for="(item,index) in currentOrder" :key="index" v-if="currentOrder.length > 0">
         <div class="o-action" @click="cancelOrderAction(item.id,item.typeKey, item.token_id)">{{$t("message.revoke")}}</div>
         <div class="o-top">
@@ -86,6 +86,9 @@
       },
       basetokens: function () {
         return this.$store.state.basetokens;
+      },
+      theme () {
+        return this.$store.state.theme;
       }
     },
     methods: {
@@ -349,8 +352,11 @@
 </script>
 
 <style lang="scss" scoped>
-  .page {
+  .dark {
     padding: 10px;
+    background-color: #1F3547;
+    min-height: 100vh;
+    box-sizing: border-box;
     .user-order{
       background: #2D4E69;
       border-radius: 3px;
@@ -398,7 +404,7 @@
         right: 10px;
         font-size: 0.75rem;
         color: #47A9FF;
-        padding: 6px 10px;
+        padding: 2px 10px;
         cursor: pointer;
         border: 1px solid #47A9FF;
         border-radius: 4px;
@@ -410,6 +416,72 @@
         text-align: center;
         font-size: 0.875rem;
         color: #fff;
+      }
+    }
+  }
+
+  .light {
+    background: #f8f8f8;
+    padding: 10px;
+    .user-order{
+      background: #ffffff;
+      border-radius: 3px;
+      padding: 10px;
+      position: relative;
+      margin-bottom: 10px;
+      .o-top{
+        .o-type{
+          font-size: 0.875rem;
+          padding-right: 10px;
+        }
+        .o-type.buy{
+          color: #14BC63;
+        }
+        .o-type.sell{
+          color: #F87070;
+        }
+        .o-time{
+          font-size: 0.75rem;
+          color: #262626;
+        }
+      }
+      .o-bottom{
+        display: flex;
+        .o-info{
+          padding-top: 10px;
+          flex: 1;
+          .info-name{
+            line-height: 3em;
+            font-size: 0.75rem;
+            color: #9F9F9F;
+          }
+          .info-value{
+            font-size: 0.75rem;
+            color: #262626;
+          }
+        }
+        .o-info:nth-child(1){
+          flex: 1.2;
+        }
+      }
+      .o-action{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 0.75rem;
+        color: #47A9FF;
+        padding: 2px 10px;
+        cursor: pointer;
+        border: 1px solid #47A9FF;
+        border-radius: 4px;
+      }
+    }
+    .user-order-none{
+      p{
+        padding: 10px;
+        text-align: center;
+        font-size: 0.875rem;
+        color: #262626;
       }
     }
   }

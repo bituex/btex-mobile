@@ -1,10 +1,20 @@
 .el-input {
   position: relative;
   font-size: 14px;
-  display: inline-block;
-  width: 100%;
+  display: block;
+  width: 80%;
+  margin: 0 auto;
 }
-.el-input-group{
+.light .el-input-group{
+  line-height: normal;
+  display: inline-table;
+  width: 100%;
+  /*background: #E2E2E2;*/
+  /*opacity: 0.4;*/
+  border-radius: 4px;
+  border: 1px solid #E2E2E2;
+}
+.dark .el-input-group{
   line-height: normal;
   display: inline-table;
   width: 100%;
@@ -17,11 +27,10 @@
 .el-input--small{
   font-size: 13px;
 }
-.el-input-group__append, .el-input-group__prepend {
+.dark .el-input-group__append, .el-input-group__prepend {
   vertical-align: middle;
   display: table-cell;
   position: relative;
-  border: none;
   border-radius: 4px;
   padding: 0 8px;
   width: 1px;
@@ -29,6 +38,18 @@
   color: #6086A8;
   background: transparent;
 }
+.light .el-input-group__append, .el-input-group__prepend {
+  vertical-align: middle;
+  display: table-cell;
+  position: relative;
+  border-radius: 4px;
+  padding: 0 8px;
+  width: 1px;
+  white-space: nowrap;
+  color: #878787;
+  background: #ffffff;
+}
+
 .el-input-group--prepend .el-input__inner, .el-input-group__append {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -36,7 +57,7 @@
 .el-input-group__append {
   border-left: 0;
 }
-.el-input__inner {
+.dark .el-input__inner {
   -webkit-appearance: none;
   background-color: transparent;
   background-image: none;
@@ -44,7 +65,26 @@
   border: none;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: #ffffff;
+  color: #FFFFFF;
+  display: inline-block;
+  font-size: inherit;
+  height: 40px;
+  line-height: 40px;
+  outline: 0;
+  padding: 0 15px;
+  -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+  transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+  width: 100%;
+}
+.light .el-input__inner {
+  -webkit-appearance: none;
+  background-color: #ffffff;
+  background-image: none;
+  border-radius: 4px;
+  border: none;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #1E1E1E;
   display: inline-block;
   font-size: inherit;
   height: 40px;
@@ -61,6 +101,7 @@
 .el-input--small .el-input__inner {
   height: 36px;
   line-height: 36px;
+  /*margin-bottom: 1px;*/
 }
 .el-input-group>.el-input__inner {
   vertical-align: middle;

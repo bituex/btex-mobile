@@ -1,5 +1,5 @@
 <template>
-  <div id="master">
+  <div id="master" :class="theme === 'light' ? 'light' : 'dark'">
     <div class="page">
       <div class="trade-page">
         <div class="tarde-container">
@@ -166,7 +166,7 @@
         currencyId: '',
         currencyNow: {asset_symbol: '', change: 0, newPrice: 0},
         favorite: false,
-        baseToken: null,
+        baseToken: {sym_name: ''},
         serverCurrency: {hight_price: 0, lower_price: 0, volume: 0, contract_name: 'eosio', asset_symbol: 'EOS', intro: '', website: '', max_supply: 0, supply: 0},
         eosCnyPrice: 0,
         sells: [],
@@ -189,7 +189,10 @@
     computed: mapState({
       identity: state => state.identity,
       serverCoins: state => state.serverCoins,
-      basetokens: state => state.basetokens
+      basetokens: state => state.basetokens,
+      theme () {
+        return this.$store.state.theme;
+      }
     }),
     watch: {
       basetokens: function (newTokens) {
@@ -574,457 +577,921 @@
 </script>
 
 <style lang="scss" scoped>
-  .trade-page {
-    background-color: #000;
-    .tarde-container {
-      .full-left {
-        box-sizing: border-box;
-        .full-left-top {
-          display: flex;
-          flex-grow: 1;
+  .dark{
+    .trade-page {
+      background-color: #000;
+      .tarde-container {
+        .full-left {
           box-sizing: border-box;
-          background-color: #fff;
-          flex-direction: column;
-          .coin-info {
-            background: #2A4862;
-            .coin-one {
-              display: flex;
-              width: 100%;
-              padding: 8px 0px 4px  0px;
-              .coin-name {
-                font-size: 16px;
-                padding-left: 10px;
-                flex: 1;
-                position: relative;
+          .full-left-top {
+            display: flex;
+            flex-grow: 1;
+            box-sizing: border-box;
+            background-color: #fff;
+            flex-direction: column;
+            .coin-info {
+              background: #2A4862;
+              .coin-one {
                 display: flex;
-                .logo{
-                  width: 26px;
-                  height: 26px;
-                  vertical-align: middle;
-                  border-radius: 13px;
-                  background-color: #fff;
-                  margin-right: 10px;
-                }
-                .name{
+                width: 100%;
+                padding: 8px 0px 4px  0px;
+                .coin-name {
+                  font-size: 16px;
+                  padding-left: 10px;
                   flex: 1;
-                  p{
-                    line-height: 1em;
-                  }
-                  p.contract-name{
-                    font-size: 12px;
-                    color: #909090;
-                  }
-                }
-              }
-              .coin-start {
-                flex: 1;
-                padding-left: 20px;
-                box-sizing: border-box;
-                display: flex;
-                span{
-                  flex: 1;
-                  vertical-align: middle;
-                }
-                .start-name{
-                  font-size: 12px;
-                  color: #FFFFFF;
-                  opacity: 0.5;vertical-align: middle;
-                  line-height: 26px;
-                }
-                .start-icons{
-                  padding-right: 10px;
-                  vertical-align: middle;
-                  padding-top: 4px;
-                  img{
-                    float: right;
-                    width: 8px;
-                    height: 8px;
-                    margin-left: 4px;
-                    margin-top: 4px;
+                  position: relative;
+                  display: flex;
+                  .logo{
+                    width: 26px;
+                    height: 26px;
                     vertical-align: middle;
+                    border-radius: 13px;
+                    background-color: #fff;
+                    margin-right: 10px;
+                  }
+                  .name{
+                    flex: 1;
+                    p{
+                      line-height: 1em;
+                    }
+                    p.contract-name{
+                      font-size: 12px;
+                      color: #909090;
+                    }
                   }
                 }
-              }
-            }
-            .coin-one, .current-trade {
-              color: #fff;
-              margin-right: 0px;
-              font-size: 12px;
-            }
-            .current-trade {
-              padding-left: 10px;
-              display: flex;
-              .trade-left{
-                flex: 1;
-                padding-right: 10px;
-                .price{
-                  font-size: 26px;
-                  line-height: 1em;
-                  padding-bottom: 6px;
-                  color: #FFFFFF;
-                }
-                .change{
-                  span.change-value{
-                    text-align: left;
-                    color: #FFFFFF;
-                  }
-                  span.price-value{
-                    text-align: left;
-                    margin-left: 8px;
-                    color: #FFFFFF;
-                  }
-                }
-              }
-              .trade-left.green{
-                .price{
-                  color: #14BC63;
-                }
-                .change{
-                  .change-value{
-                    color: #14BC63;
-                  }
-                  .price-value{
-                    color: #14BC63;
-                  }
-                }
-              }
-              .trade-left.red{
-                .price{
-                  color: #FF8181;
-                }
-                .change{
-                  .change-value{
-                    color: #FF8181;
-                  }
-                  .price-value{
-                    color: #FF8181;
-                  }
-                }
-              }
-              .trade-right{
-                flex: 1;
-                padding-left: 10px;
-                .right-item{
-                  padding-right: 10px;
+                .coin-start {
+                  flex: 1;
+                  padding-left: 20px;
+                  box-sizing: border-box;
                   display: flex;
                   span{
                     flex: 1;
+                    vertical-align: middle;
                   }
-                  span:nth-child(1){
+                  .start-name{
+                    font-size: 12px;
+                    color: #FFFFFF;
+                    opacity: 0.5;vertical-align: middle;
+                    line-height: 26px;
+                  }
+                  .start-icons{
+                    padding-right: 10px;
+                    vertical-align: middle;
+                    padding-top: 4px;
+                    img{
+                      float: right;
+                      width: 8px;
+                      height: 8px;
+                      margin-left: 4px;
+                      margin-top: 4px;
+                      vertical-align: middle;
+                    }
+                  }
+                }
+              }
+              .coin-one, .current-trade {
+                color: #fff;
+                margin-right: 0px;
+                font-size: 12px;
+              }
+              .current-trade {
+                padding-left: 10px;
+                display: flex;
+                .trade-left{
+                  flex: 1;
+                  padding-right: 10px;
+                  .price{
+                    font-size: 26px;
+                    line-height: 1em;
+                    padding-bottom: 6px;
+                    color: #FFFFFF;
+                  }
+                  .change{
+                    span.change-value{
+                      text-align: left;
+                      color: #FFFFFF;
+                    }
+                    span.price-value{
+                      text-align: left;
+                      margin-left: 8px;
+                      color: #FFFFFF;
+                    }
+                  }
+                }
+                .trade-left.green{
+                  .price{
+                    color: #14BC63;
+                  }
+                  .change{
+                    .change-value{
+                      color: #14BC63;
+                    }
+                    .price-value{
+                      color: #14BC63;
+                    }
+                  }
+                }
+                .trade-left.red{
+                  .price{
+                    color: #FF8181;
+                  }
+                  .change{
+                    .change-value{
+                      color: #FF8181;
+                    }
+                    .price-value{
+                      color: #FF8181;
+                    }
+                  }
+                }
+                .trade-right{
+                  flex: 1;
+                  padding-left: 10px;
+                  .right-item{
+                    padding-right: 10px;
+                    display: flex;
+                    span{
+                      flex: 1;
+                    }
+                    span:nth-child(1){
+                      text-align: left;
+                    }
+                    span:nth-child(2){
+                      text-align: right;
+                    }
+                  }
+                }
+              }
+            }
+            .full-kline {
+              overflow: hidden;
+              width: 100%;
+              height: 380px;
+              background-color: #1F3548;
+              iframe{
+                width: 100%;
+                height: 320px;
+                overflow: hidden;
+              }
+            }
+          }
+          .full-left-bottom {
+            /*height: 345px;*/
+            margin-bottom: 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            box-sizing: border-box;
+            background: #1F3548;
+            .order-trade {
+              font-size: 12px;
+              height: calc(100% - 0px);
+              .order-tab{
+                .tabs{
+                  background: #2a4862;
+                  padding: 0 10px;
+                  margin: 0;
+                  .tab-item{
+                    margin-right: 20px;
+                    height: 40px;
+                    box-sizing: border-box;
+                    line-height: 40px;
+                    display: inline-block;
+                    list-style: none;
+                    font-size: 12px;
+                    font-weight: 500;
+                    color: #fff;
+                    opacity: .5;
+                    position: relative;
+                  }
+                  .tab-item.active{
+                    opacity: 1;
+                    border-bottom: 2px solid #589ad3;
+                  }
+                }
+              }
+              .spot-box {
+                height: 305px;
+                width: 100%;
+                position: relative;
+                padding-bottom: 45px;
+                .spot-head {
+                  color: #5A81A3;
+                  padding: 0px;
+                  line-height: 24px;
+                  height: 24px;
+                  padding-top: 10px;
+                  li {
+                    list-style: none;
+                    float: left;
+                    font-size: 12px;
+                    text-align: center;
+                  }
+                  li:nth-of-type(5n+3) {
+                    width: 20%;
+                  }
+                  li:nth-of-type(5n+2), li:nth-of-type(5n+4) {
+                    width: 30%;
+                  }
+                  li:nth-of-type(5n+1), li:nth-of-type(5n+5) {
+                    width: 10%;
+                  }
+                }
+                .scroll-box {
+                  height: calc(100% - 34px);
+                  overflow-y: auto;
+                  padding: 0px 10px;
+                  width: 100%;
+                  box-sizing: border-box;
+                  display: flex;
+                  .sell-list {
+                    padding: 0px;
+                    width: 50%;
+                    li {
+                      list-style: none;
+                      padding: 5px 0px;
+                      height: 16px;
+                      line-height: 16px;
+                      text-align: center;
+                      font-size: 12px;
+                      position: relative;
+                      span {
+                        color: #fff;
+                        display: inline-block;
+                        float: left;
+                      }
+                      span .green {
+                        color: #14BC63;
+                        font-style: normal;
+                      }
+                      span .red {
+                        color: #F87070;
+                        font-style: normal;
+                      }
+                      span:nth-of-type(5n+3) {
+                        width: 20%;
+                        text-align: right;
+                      }
+                      span:nth-of-type(5n+2), span:nth-of-type(5n+4) {
+                        width: 45%;
+                        /*text-align: right;*/
+                      }
+                      span:nth-of-type(5n+1), span:nth-of-type(5n+5) {
+                        width: 35%;
+                        text-align: left;
+                      }
+                      i.ambg {
+                        height: 99%;
+                        position: absolute;
+                        left: 0;
+                        opacity: .3;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        background: RGBA(82,177,109,.35);
+                      }
+                      i.ambg1{
+                        background: RGBA(232,18,52,.5);
+                      }
+                    }
+                  }
+                  .buy-list {
+                    padding: 0px;
+                    width: 50%;
+                    li {
+                      list-style: none;
+                      padding: 5px 0px;
+                      height: 16px;
+                      line-height: 16px;
+                      text-align: center;
+                      font-size: 12px;
+                      position: relative;
+                      span {
+                        color: #fff;
+                        display: inline-block;
+                        float: left;
+                      }
+                      span .green {
+                        color: #14BC63;
+                        font-style: normal;
+                      }
+                      span .red {
+                        color: #F87070;
+                        font-style: normal;
+                      }
+                      span:nth-of-type(5n+3) {
+                        width: 35%;
+                        text-align: right;
+                      }
+                      span:nth-of-type(5n+2), span:nth-of-type(5n+4) {
+                        width: 45%;
+                        /*text-align: left;*/
+                      }
+                      span:nth-of-type(5n+1), span:nth-of-type(5n+5) {
+                        width: 20%;
+                        text-align: left;
+                      }
+                      i.ambg {
+                        height: 99%;
+                        position: absolute;
+                        right: 0;
+                        opacity: .3;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        background: RGBA(82,177,109,.35);
+                      }
+                    }
+                  }
+                }
+              }
+              .deals-box {
+                min-height: 200px;
+                width: 100%;
+                position: relative;
+                padding-bottom: 55px;
+                box-sizing: border-box;
+                .deals-head {
+                  color: #5A81A3;
+                  padding: 10px 10px 0px 10px;
+                  line-height: 24px;
+                  li {
+                    list-style: none;
+                    float: left;
+                    font-size: 12px;
+                    text-align: right;
+                    width: 33%;
+                  }
+                  li:nth-of-type(3n+1) {
                     text-align: left;
                   }
-                  span:nth-child(2){
+                }
+                .deals-list {
+                  height: calc(100% - 24px);
+                  overflow-y: auto;
+                  padding: 0px 10px;
+                  li {
+                    list-style: none;
+                    padding: 5px 0px;
+                    height: 16px;
+                    line-height: 16px;
+                    text-align: right;
+                    font-size: 12px;
+                    span {
+                      color: #cbc8c8;
+                      display: inline-block;
+                      float: left;
+                      width: 33%;
+                    }
+                    span:nth-of-type(3n+1) {
+                      text-align: left;
+                    }
+                    span.green {
+                      color: #14BC63;
+                    }
+                    span.red {
+                      color: #F87070;
+                    }
+                  }
+                }
+              }
+              .coin-about{
+                color: #cbc8c8;
+                padding: 10px;
+                padding-bottom: 55px;
+                .coin-name{
+                  font-size: 16px;
+                  padding: 10px 0px;
+                }
+                .coin-info2 {
+                  line-height: 1.3em;
+                  letter-spacing: 2px;
+                  padding: 10px 0px;
+                  text-align: justify;
+                }
+                .coin-contract {
+                  padding: 10px 0px;
+                  display: flex;
+                  .key {
+                    flex: 1;
+                  }
+                  .key-value {
+                    flex: 2;
+                    text-align: right;
+                  }
+                }
+                .coin-website {
+                  padding: 10px 0px;
+                  display: flex;
+                  .key {
+                    flex: 1;
+                  }
+                  .key-value {
+                    flex: 2;
                     text-align: right;
                   }
                 }
               }
             }
           }
-          .full-kline {
-            overflow: hidden;
-            width: 100%;
-            height: 380px;
-            background-color: #1F3548;
-            iframe{
-              width: 100%;
-              height: 320px;
-              overflow: hidden;
+        }
+      }
+      .full-bottom {
+        width: 100%;
+        position: fixed;
+        bottom: 0px;
+        .actions {
+          display: flex;
+          color: #fff;
+          text-align: center;
+          width: 100%;
+          font-size: 14px;
+          .sell {
+            background: #F87070;
+            padding: 12px 0px;
+            flex: 1;
+          }
+          .buy {
+            background: #14BC63;
+            padding: 12px 0px;
+            flex: 1;
+          }
+          .favorites{
+            background: #2C4962;
+            vertical-align: middle;
+            padding: 12px 10px;
+            img{
+              width: 17px;
+              height: 17px;
+              vertical-align: middle;
+            }
+            span{
+              padding-left: 4px;
+              height: 100%;
+              vertical-align: middle;
+              color: #B1CFE8;
+              font-size: 14px;
             }
           }
         }
-        .full-left-bottom {
-          /*height: 345px;*/
-          margin-bottom: 0;
-          overflow-x: auto;
-          overflow-y: hidden;
+      }
+    }
+  }
+  .light{
+    .trade-page {
+      background-color: #000;
+      .tarde-container {
+        .full-left {
           box-sizing: border-box;
-          background: #1F3548;
-          .order-trade {
-            font-size: 12px;
-            height: calc(100% - 0px);
-            .order-tab{
-              .tabs{
-                background: #2a4862;
-                padding: 0 10px;
-                margin: 0;
-                .tab-item{
-                  margin-right: 20px;
-                  height: 40px;
-                  box-sizing: border-box;
-                  line-height: 40px;
-                  display: inline-block;
-                  list-style: none;
-                  font-size: 12px;
-                  font-weight: 500;
-                  color: #fff;
-                  opacity: .5;
-                  position: relative;
-                }
-                .tab-item.active{
-                  opacity: 1;
-                  border-bottom: 2px solid #589ad3;
-                }
-              }
-            }
-            .spot-box {
-              height: 305px;
-              width: 100%;
-              position: relative;
-              padding-bottom: 45px;
-              .spot-head {
-                color: #5A81A3;
-                padding: 0px;
-                line-height: 24px;
-                height: 24px;
-                padding-top: 10px;
-                li {
-                  list-style: none;
-                  float: left;
-                  font-size: 12px;
-                  text-align: center;
-                }
-                li:nth-of-type(5n+3) {
-                  width: 20%;
-                }
-                li:nth-of-type(5n+2), li:nth-of-type(5n+4) {
-                  width: 30%;
-                }
-                li:nth-of-type(5n+1), li:nth-of-type(5n+5) {
-                  width: 10%;
-                }
-              }
-              .scroll-box {
-                height: calc(100% - 34px);
-                overflow-y: auto;
-                padding: 0px 10px;
-                width: 100%;
-                box-sizing: border-box;
+          .full-left-top {
+            display: flex;
+            flex-grow: 1;
+            box-sizing: border-box;
+            background-color: #fff;
+            flex-direction: column;
+            .coin-info {
+              background: #FFFFFF;
+              .coin-one {
                 display: flex;
-                .sell-list {
-                  padding: 0px;
-                  width: 50%;
-                  li {
-                    list-style: none;
-                    padding: 5px 0px;
-                    height: 16px;
-                    line-height: 16px;
-                    text-align: center;
-                    font-size: 12px;
-                    position: relative;
-                    span {
-                      color: #fff;
-                      display: inline-block;
-                      float: left;
+                width: 100%;
+                padding: 8px 0px 4px  0px;
+                .coin-name {
+                  font-size: 16px;
+                  padding-left: 10px;
+                  flex: 1;
+                  position: relative;
+                  display: flex;
+                  .logo{
+                    width: 26px;
+                    height: 26px;
+                    vertical-align: middle;
+                    border-radius: 13px;
+                    background-color: #fff;
+                    margin-right: 10px;
+                  }
+                  .name{
+                    flex: 1;
+                    p{
+                      line-height: 1em;
                     }
-                    span .green {
-                      color: #14BC63;
-                      font-style: normal;
-                    }
-                    span .red {
-                      color: #F87070;
-                      font-style: normal;
-                    }
-                    span:nth-of-type(5n+3) {
-                      width: 20%;
-                      text-align: right;
-                    }
-                    span:nth-of-type(5n+2), span:nth-of-type(5n+4) {
-                      width: 45%;
-                      /*text-align: right;*/
-                    }
-                    span:nth-of-type(5n+1), span:nth-of-type(5n+5) {
-                      width: 35%;
-                      text-align: left;
-                    }
-                    i.ambg {
-                      height: 99%;
-                      position: absolute;
-                      left: 0;
-                      opacity: .3;
-                      top: 50%;
-                      transform: translateY(-50%);
-                      background: RGBA(82,177,109,.35);
-                    }
-                    i.ambg1{
-                      background: RGBA(232,18,52,.5);
+                    p.contract-name{
+                      font-size: 12px;
+                      color: #909090;
                     }
                   }
                 }
-                .buy-list {
-                  padding: 0px;
-                  width: 50%;
-                  li {
-                    list-style: none;
-                    padding: 5px 0px;
-                    height: 16px;
-                    line-height: 16px;
-                    text-align: center;
+                .coin-start {
+                  flex: 1;
+                  padding-left: 20px;
+                  box-sizing: border-box;
+                  display: flex;
+                  span{
+                    flex: 1;
+                    vertical-align: middle;
+                  }
+                  .start-name{
                     font-size: 12px;
-                    position: relative;
-                    span {
-                      color: #fff;
-                      display: inline-block;
-                      float: left;
-                    }
-                    span .green {
-                      color: #14BC63;
-                      font-style: normal;
-                    }
-                    span .red {
-                      color: #F87070;
-                      font-style: normal;
-                    }
-                    span:nth-of-type(5n+3) {
-                      width: 35%;
-                      text-align: right;
-                    }
-                    span:nth-of-type(5n+2), span:nth-of-type(5n+4) {
-                      width: 45%;
-                      /*text-align: left;*/
-                    }
-                    span:nth-of-type(5n+1), span:nth-of-type(5n+5) {
-                      width: 20%;
-                      text-align: left;
-                    }
-                    i.ambg {
-                      height: 99%;
-                      position: absolute;
-                      right: 0;
-                      opacity: .3;
-                      top: 50%;
-                      transform: translateY(-50%);
-                      background: RGBA(82,177,109,.35);
+                    color: #262626;
+                    opacity: 0.5;vertical-align: middle;
+                    line-height: 26px;
+                  }
+                  .start-icons{
+                    padding-right: 10px;
+                    vertical-align: middle;
+                    padding-top: 4px;
+                    img{
+                      float: right;
+                      width: 8px;
+                      height: 8px;
+                      margin-left: 4px;
+                      margin-top: 4px;
+                      vertical-align: middle;
                     }
                   }
                 }
               }
-            }
-            .deals-box {
-              min-height: 200px;
-              width: 100%;
-              position: relative;
-              padding-bottom: 55px;
-              box-sizing: border-box;
-              .deals-head {
-                color: #5A81A3;
-                padding: 10px 10px 0px 10px;
-                line-height: 24px;
-                li {
-                  list-style: none;
-                  float: left;
-                  font-size: 12px;
-                  text-align: right;
-                  width: 33%;
-                }
-                li:nth-of-type(3n+1) {
-                  text-align: left;
-                }
+              .coin-one, .current-trade {
+                color: #262626;
+                margin-right: 0px;
+                font-size: 12px;
               }
-              .deals-list {
-                height: calc(100% - 24px);
-                overflow-y: auto;
-                padding: 0px 10px;
-                li {
-                  list-style: none;
-                  padding: 5px 0px;
-                  height: 16px;
-                  line-height: 16px;
-                  text-align: right;
-                  font-size: 12px;
-                  span {
-                    color: #cbc8c8;
-                    display: inline-block;
-                    float: left;
-                    width: 33%;
+              .current-trade {
+                padding-left: 10px;
+                display: flex;
+                .trade-left{
+                  flex: 1;
+                  padding-right: 10px;
+                  .price{
+                    font-size: 26px;
+                    line-height: 1em;
+                    padding-bottom: 6px;
+                    color: #262626;
                   }
-                  span:nth-of-type(3n+1) {
-                    text-align: left;
+                  .change{
+                    span.change-value{
+                      text-align: left;
+                      color: #262626;
+                    }
+                    span.price-value{
+                      text-align: left;
+                      margin-left: 8px;
+                      color: #262626;
+                    }
                   }
-                  span.green {
+                }
+                .trade-left.green{
+                  .price{
                     color: #14BC63;
                   }
-                  span.red {
-                    color: #F87070;
+                  .change{
+                    .change-value{
+                      color: #14BC63;
+                    }
+                    .price-value{
+                      color: #14BC63;
+                    }
+                  }
+                }
+                .trade-left.red{
+                  .price{
+                    color: #FF8181;
+                  }
+                  .change{
+                    .change-value{
+                      color: #FF8181;
+                    }
+                    .price-value{
+                      color: #FF8181;
+                    }
+                  }
+                }
+                .trade-right{
+                  flex: 1;
+                  padding-left: 10px;
+                  .right-item{
+                    padding-right: 10px;
+                    display: flex;
+                    span{
+                      flex: 1;
+                    }
+                    span:nth-child(1){
+                      text-align: left;
+                    }
+                    span:nth-child(2){
+                      text-align: right;
+                    }
                   }
                 }
               }
             }
-            .coin-about{
-              color: #cbc8c8;
-              padding: 10px;
-              padding-bottom: 55px;
-              .coin-name{
-                font-size: 16px;
-                padding: 10px 0px;
+            .full-kline {
+              overflow: hidden;
+              width: 100%;
+              height: 380px;
+              background-color: #ffffff;
+              iframe{
+                width: 100%;
+                height: 320px;
+                overflow: hidden;
               }
-              .coin-info2 {
-                line-height: 1.3em;
-                letter-spacing: 2px;
-                padding: 10px 0px;
-                text-align: justify;
+            }
+          }
+          .full-left-bottom {
+            /*height: 345px;*/
+            margin-bottom: 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            box-sizing: border-box;
+            background: #ffffff;
+            .order-trade {
+              font-size: 12px;
+              height: calc(100% - 0px);
+              .order-tab{
+                .tabs{
+                  background: #F8F8F8;
+                  padding: 0 10px;
+                  margin: 0;
+                  .tab-item{
+                    margin-right: 20px;
+                    height: 40px;
+                    box-sizing: border-box;
+                    line-height: 40px;
+                    display: inline-block;
+                    list-style: none;
+                    font-size: 12px;
+                    font-weight: 500;
+                    color: #9F9F9F;
+                    /*opacity: .5;*/
+                    position: relative;
+                  }
+                  .tab-item.active{
+                    opacity: 1;
+                    color: #262626;
+                    border-bottom: 2px solid #589ad3;
+                  }
+                }
               }
-              .coin-contract {
-                padding: 10px 0px;
-                display: flex;
-                .key {
-                  flex: 1;
+              .spot-box {
+                height: 305px;
+                width: 100%;
+                position: relative;
+                padding-bottom: 45px;
+                .spot-head {
+                  color: #5A81A3;
+                  padding: 0px;
+                  line-height: 24px;
+                  height: 24px;
+                  padding-top: 10px;
+                  li {
+                    list-style: none;
+                    float: left;
+                    font-size: 12px;
+                    text-align: center;
+                  }
+                  li:nth-of-type(5n+3) {
+                    width: 20%;
+                  }
+                  li:nth-of-type(5n+2), li:nth-of-type(5n+4) {
+                    width: 30%;
+                  }
+                  li:nth-of-type(5n+1), li:nth-of-type(5n+5) {
+                    width: 10%;
+                  }
                 }
-                .key-value {
-                  flex: 2;
-                  text-align: right;
+                .scroll-box {
+                  height: calc(100% - 34px);
+                  overflow-y: auto;
+                  padding: 0px 10px;
+                  width: 100%;
+                  box-sizing: border-box;
+                  display: flex;
+                  .sell-list {
+                    padding: 0px;
+                    width: 50%;
+                    li {
+                      list-style: none;
+                      padding: 5px 0px;
+                      height: 16px;
+                      line-height: 16px;
+                      text-align: center;
+                      font-size: 12px;
+                      position: relative;
+                      span {
+                        color: #262626;
+                        display: inline-block;
+                        float: left;
+                      }
+                      span .green {
+                        color: #14BC63;
+                        font-style: normal;
+                      }
+                      span .red {
+                        color: #F87070;
+                        font-style: normal;
+                      }
+                      span:nth-of-type(5n+3) {
+                        width: 20%;
+                        text-align: right;
+                        color: #9F9F9F;
+                      }
+                      span:nth-of-type(5n+2), span:nth-of-type(5n+4) {
+                        width: 45%;
+                        /*text-align: right;*/
+                      }
+                      span:nth-of-type(5n+1), span:nth-of-type(5n+5) {
+                        width: 35%;
+                        text-align: left;
+                      }
+                      i.ambg {
+                        height: 99%;
+                        position: absolute;
+                        left: 0;
+                        opacity: .3;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        background: RGBA(82,177,109,.35);
+                      }
+                      i.ambg1{
+                        background: RGBA(232,18,52,.5);
+                      }
+                    }
+                  }
+                  .buy-list {
+                    padding: 0px;
+                    width: 50%;
+                    li {
+                      list-style: none;
+                      padding: 5px 0px;
+                      height: 16px;
+                      line-height: 16px;
+                      text-align: center;
+                      font-size: 12px;
+                      position: relative;
+                      span {
+                        color: #262626;
+                        display: inline-block;
+                        float: left;
+                      }
+                      span .green {
+                        color: #14BC63;
+                        font-style: normal;
+                      }
+                      span .red {
+                        color: #F87070;
+                        font-style: normal;
+                      }
+                      span:nth-of-type(5n+3) {
+                        width: 35%;
+                        text-align: right;
+                      }
+                      span:nth-of-type(5n+2), span:nth-of-type(5n+4) {
+                        width: 45%;
+                        /*text-align: left;*/
+                      }
+                      span:nth-of-type(5n+1), span:nth-of-type(5n+5) {
+                        width: 20%;
+                        text-align: left;
+                        color: #9F9F9F;
+                      }
+                      i.ambg {
+                        height: 99%;
+                        position: absolute;
+                        right: 0;
+                        opacity: .3;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        background: RGBA(82,177,109,.35);
+                      }
+                    }
+                  }
                 }
               }
-              .coin-website {
-                padding: 10px 0px;
-                display: flex;
-                .key {
-                  flex: 1;
+              .deals-box {
+                min-height: 200px;
+                width: 100%;
+                position: relative;
+                padding-bottom: 55px;
+                box-sizing: border-box;
+                .deals-head {
+                  color: #5A81A3;
+                  padding: 10px 10px 0px 10px;
+                  line-height: 24px;
+                  li {
+                    list-style: none;
+                    float: left;
+                    font-size: 12px;
+                    text-align: right;
+                    width: 33%;
+                  }
+                  li:nth-of-type(3n+1) {
+                    text-align: left;
+                  }
                 }
-                .key-value {
-                  flex: 2;
-                  text-align: right;
+                .deals-list {
+                  height: calc(100% - 24px);
+                  overflow-y: auto;
+                  padding: 0px 10px;
+                  li {
+                    list-style: none;
+                    padding: 5px 0px;
+                    height: 16px;
+                    line-height: 16px;
+                    text-align: right;
+                    font-size: 12px;
+                    span {
+                      color: #262626;
+                      display: inline-block;
+                      float: left;
+                      width: 33%;
+                    }
+                    span:nth-of-type(3n+1) {
+                      text-align: left;
+                    }
+                    span.green {
+                      color: #14BC63;
+                    }
+                    span.red {
+                      color: #F87070;
+                    }
+                  }
+                }
+              }
+              .coin-about{
+                color: #262626;
+                padding: 10px;
+                padding-bottom: 55px;
+                .coin-name{
+                  font-size: 16px;
+                  padding: 10px 0px;
+                }
+                .coin-info2 {
+                  line-height: 1.3em;
+                  letter-spacing: 2px;
+                  padding: 10px 0px;
+                  text-align: justify;
+                }
+                .coin-contract {
+                  padding: 10px 0px;
+                  display: flex;
+                  .key {
+                    flex: 1;
+                  }
+                  .key-value {
+                    flex: 2;
+                    text-align: right;
+                  }
+                }
+                .coin-website {
+                  padding: 10px 0px;
+                  display: flex;
+                  .key {
+                    flex: 1;
+                  }
+                  .key-value {
+                    flex: 2;
+                    text-align: right;
+                  }
                 }
               }
             }
           }
         }
       }
-    }
-    .full-bottom {
-      width: 100%;
-      position: fixed;
-      bottom: 0px;
-      .actions {
-        display: flex;
-        color: #fff;
-        text-align: center;
+      .full-bottom {
         width: 100%;
-        font-size: 14px;
-        .sell {
-          background: #F87070;
-          padding: 12px 0px;
-          flex: 1;
-        }
-        .buy {
-          background: #14BC63;
-          padding: 12px 0px;
-          flex: 1;
-        }
-        .favorites{
-          background: #2C4962;
-          vertical-align: middle;
-          padding: 12px 10px;
-          img{
-            width: 17px;
-            height: 17px;
-            vertical-align: middle;
+        position: fixed;
+        bottom: 0px;
+        .actions {
+          display: flex;
+          color: #fff;
+          text-align: center;
+          width: 100%;
+          font-size: 14px;
+          .sell {
+            background: #F87070;
+            padding: 12px 0px;
+            flex: 1;
           }
-          span{
-            padding-left: 4px;
-            height: 100%;
+          .buy {
+            background: #14BC63;
+            padding: 12px 0px;
+            flex: 1;
+          }
+          .favorites{
+            background: #FFFFFF;
             vertical-align: middle;
-            color: #B1CFE8;
-            font-size: 14px;
+            padding: 12px 10px;
+            border-top: 1px solid #E8E8E8;
+            img{
+              width: 17px;
+              height: 17px;
+              vertical-align: middle;
+            }
+            span{
+              padding-left: 4px;
+              height: 100%;
+              vertical-align: middle;
+              color: #262626;
+              font-size: 14px;
+            }
           }
         }
       }

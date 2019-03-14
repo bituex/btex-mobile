@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" :class="theme === 'light' ? 'light' : 'dark'">
     <div class="weui-search-bar" :class="{'weui-search-bar_focusing': focusing}" id="searchBar">
       <form class="weui-search-bar__form" style="border-radius: 4px;">
         <div class="weui-search-bar__box">
@@ -65,7 +65,10 @@
     computed: mapState({
       contractCoins: state => state.contractCoins,
       serverCoins: state => state.serverCoins,
-      basetokens: state => state.basetokens
+      basetokens: state => state.basetokens,
+      theme () {
+        return this.$store.state.theme;
+      }
     }),
     watch: {
       coinInfo: function(newCoinInfo) {
@@ -273,7 +276,11 @@
    height: 40px;
    box-sizing: border-box;
  }
- #searchResult{
+ .dark{
+   background-color: #1F3547;
+   min-height: 100vh;
+ }
+ .dark #searchResult{
    .coins {
      padding: 15px;
      background-color: #1F3547;
@@ -313,6 +320,64 @@
          .price-cny{
            font-size: 0.75rem;
            color: #818181;
+         }
+       }
+       .increase{
+         flex: 1;
+         padding: 7.2px 0px;
+         .increase-value{
+           background: #5AB36D;
+           border-radius: 6px;
+           font-size: 0.875rem;
+           color: #FFFFFF;
+           text-align: center;
+           padding: 4px 0px;
+         }
+       }
+     }
+   }
+ }
+
+ .light #searchResult{
+   .coins {
+     padding: 15px;
+     background-color: #ffffff;
+     height: calc(100% - 45px);
+     overflow: auto;
+     .coin{
+       margin-bottom: 15px;
+       display: flex;
+       .pair{
+         flex: 2;
+         position: relative;
+         padding-left: 40px;
+         .logo{
+           width: 32px;
+           position: absolute;
+           left: 0px;
+           top: 3px;
+           border-radius: 16px;
+           background: #fff;
+         }
+         .coin-name{
+           font-size: 1rem;
+           color: #262626;
+         }
+         .volume{
+           font-size: 0.75rem;
+           color: #9F9F9F;
+         }
+       }
+       .price{
+         flex: 1;
+         padding-top: 2px;
+         .price-eos{
+           font-size: 0.875rem;
+           color: #14BC63;
+         }
+         .price-cny{
+           font-size: 0.75rem;
+           color: #9F9F9F;
          }
        }
        .increase{

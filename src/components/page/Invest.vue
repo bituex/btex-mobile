@@ -1,7 +1,10 @@
 <template>
-  <div class="page">
+  <div class="page" :class="theme === 'light' ? 'light' : 'dark'">
       <div class="bonus-index">
-        <div class="bonus-all-title">{{$t("message.bonus_pool")}}(EOS)<img class="questions" @click="questionAction" src="../../assets/img/pollques.png"/></div>
+        <div class="bonus-all-title">{{$t("message.bonus_pool")}}(EOS)
+          <img class="questions" v-if="theme === 'dark'" @click="questionAction" src="../../assets/img/pollques.png"/>
+          <img class="questions" v-if="theme === 'light'" @click="questionAction" src="../../assets/img/pollques_light.png"/>
+        </div>
         <div class="bonus-all"><ICountUp class="myCounter" :startVal="startVal"
                                          :endVal="indexesData.bonus_pool_eos"
                                          :decimals="decimals"
@@ -21,6 +24,7 @@
               <div class="user-bonus-c-value">{{userHistoryData.bonus_history_eos}}</div>
             </div>
           </div>
+          <div class="index-text2">{{$t("message.annualized_return")}} {{yieldRate}}%，{{$t("message.bouns_day")}}{{bounsDay}} {{$t("message.day")}}</div>
           <div class="index-text">{{$t("message.per_10000bt_mortgages_one_day_expected_revenue")}}：<span style="font-weight: bold;">{{indexNum}}&nbsp;EOS</span></div>
           <div class="bonus-btn" @click="mortgageAction"><span class="involveText">{{$t("message.immediately_mortgage")}}</span></div>
         </div>
@@ -130,7 +134,9 @@
         totalMortgage: '0.0000',
         totalIncom: '0.0000',
         // 页面数据
-        tabCurrent: 'invest'
+        tabCurrent: 'invest',
+        // BT 价格
+        btPrice: 0
       };
     },
     computed: {
@@ -149,6 +155,26 @@
         } else {
           return 0;
         }
+      },
+      // 年化收益率
+      yieldRate() {
+        if (this.btPrice === 0) {
+          return '--';
+        } else {
+          let lva = ((this.indexNum * 365) / (10000 * this.btPrice) * 100);
+          return parseFloat(lva).toFixed(2);
+        }
+      },
+      // 已分红多少天
+      bounsDay() {
+        var date1 = new Date('2018-10-10'); // 开始时间
+        var date2 = new Date(); // 结束时间
+        var date3 = date2.getTime() - date1.getTime(); // 时间差的毫秒数
+        var days = Math.floor(date3 / (24 * 3600 * 1000));
+        return days;
+      },
+      theme () {
+        return this.$store.state.theme;
       }
     },
     watch: {
@@ -598,6 +624,16 @@
           }
         });
       },
+      // 获取BT价格
+      getBTPrice() {
+        var that = this;
+        var params = {'scope': 'btexexchange', 'code': 'btexexchange', 'table': 'tokenpairs', 'json': 'true', 'limit': 1, 'index_position': 1, 'lower_bound': '154114185766125772'};
+        EosUtil.getTableRow(params, function (rows) {
+          if (rows && rows.length > 0 && rows[0].id === '154114185766125772') {
+            that.btPrice = rows[0].price;
+          }
+        });
+      },
       // 获取用户的抵押纪录
       getUserMortgages(accountName) {
         var that = this;
@@ -641,9 +677,12 @@
       that.getTotalMortgage();
       // 获取统计表数据
       that.getIndexesData();
+      // 获取BT价格
+      that.getBTPrice();
       this.timeIntever = setInterval(function () {
         that.getTotalMortgage();
         that.getIndexesData();
+        that.getBTPrice();
         if (that.account) {
           that.getUserHistoryData(that.account.name);
           that.getUserMortgages(that.account.name);
@@ -659,8 +698,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .page {
-    /*background: #1F3547;*/
+  .page.dark {
     padding: 15px 15px;
     .bonus-index {
       .bonus-all-title{
@@ -728,6 +766,13 @@
           .user-bonus-history{
             border-left: 1px solid #f8f8f854;;
           }
+        }
+        .index-text2{
+          opacity: 0.5;
+          font-size: 12px;
+          color: #ffffff;;
+          text-align: center;
+          padding: 5px 0px;
         }
         .index-text{
           opacity: 0.5;
@@ -876,6 +921,235 @@
         /*}*/
         .el-input-group{
           background-color: #1F3547;
+          opacity: 1;
+          border: 1px solid #182937;
+        }
+      }
+    }
+  }
+  .page.light {
+    padding: 15px 15px;
+    .bonus-index {
+      .bonus-all-title{
+        font-size: 16px;
+        color: #262626;
+        text-align: center;
+        .questions{
+          width: 18px;
+          height: auto;
+          margin-left: 10px;
+          vertical-align: middle;
+        }
+      }
+      .bonus-all{
+        font-size: 30px;
+        color: #262626;
+        text-align: center;
+      }
+      .mortgage-total{
+        opacity: 0.5;
+        font-size: 12px;
+        color: #262626;
+        text-align: center;
+      }
+      .bonus-info-box{
+        margin-top: 20px;
+        background-image: linear-gradient(-225deg, #2EB8FF 0%, #2AA1F8 41%, #1B4EE1 100%);
+        border-radius: 6px;
+        padding: 15px;
+        margin-bottom: 35px;
+        text-align: center;
+        position: relative;
+        .have-bonus-title{
+          font-size: 16px;
+          color: #FFFFFF;
+        }
+        .have-bonus{
+          font-size: 26px;
+          color: #FFFFFF;
+          padding: 10px 0px;
+        }
+        .user-bonus{
+          display: flex;
+          text-align: center;
+          padding-bottom: 20px;
+          .user-bonus-current,.user-bonus-history{
+            flex: 1;
+            .user-bonus-c-title{
+              opacity: 0.5;
+              font-size: 12px;
+              color: #ffffff;
+              text-align: center;
+              line-height: 1.5em;
+            }
+            .user-bonus-c-value{
+              font-size: 14px;
+              color: #ffffff;
+              text-align: center;
+              line-height: 1.5em;
+            }
+          }
+          .user-bonus-current{
+            border-right: 1px solid #f8f8f854;
+          }
+          .user-bonus-history{
+            border-left: 1px solid #f8f8f854;;
+          }
+        }
+        .index-text2{
+          opacity: 0.5;
+          font-size: 12px;
+          color: #ffffff;;
+          text-align: center;
+          padding: 5px 0px;
+        }
+        .index-text{
+          opacity: 0.5;
+          font-size: 12px;
+          color: #ffffff;;
+          text-align: center;
+          padding: 5px 0px 15px 0px;
+        }
+        .bonus-btn {
+          background: #F9AA44;
+          border-radius: 4px;
+          font-size: 16px;
+          color: #FFFFFF;
+          padding: 10px 10px;
+          text-align: center;
+          position: absolute;
+          bottom: -23px;
+          left: 15px;
+          right: 15px;
+        }
+      }
+    }
+    .bonus-list {
+      .title-name{
+        font-size: 12px;
+        color: #262626;
+        opacity: 0.5;
+        padding: 10px 0px;
+      }
+      .lists {
+        padding-bottom: 55px;
+        .boun {
+          background: #ffffff;
+          border-radius: 3px;
+          padding: 15px 20px;
+          position: relative;
+          margin-bottom: 10px;
+          .o-top {
+            .o-time {
+              font-size: 14px;
+              color: #262626;
+            }
+          }
+          .o-bottom {
+            display: flex;
+            .o-info {
+              padding-top: 10px;
+              flex: 1;
+              .info-name {
+                line-height: 3em;
+                font-size: 12px;
+                color: #5A81A3;
+              }
+              .info-value {
+                font-size: 12px;
+                color: #262626;
+              }
+            }
+            .o-info:nth-child(1) {
+              flex: 1.2;
+            }
+          }
+          .o-action {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            padding: 3px 10px;
+            cursor: pointer;
+            border: 1px solid #47A9FF;
+            font-size: 12px;
+            color: #47A9FF;
+            border-radius: 4px;
+          }
+        }
+      }
+    }
+    .el-dialog{
+      .actionBox{
+        padding: 10px;
+        .actionName{
+          font-size: 24px;
+          color: #262626;
+          text-align: center;
+          padding-bottom: 30px;
+        }
+        .quik-num-btns{
+          display: flex;
+          padding: 10px 0px;
+          span{
+            flex: 1;
+            margin-right: 10px;
+            display: table-cell;
+            background: rgba(71, 169, 255, 0.16);
+            color: rgba(0,0,0,0.43);
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            vertical-align: middle;
+            padding: 4px;
+            font-size: 12px;
+          }
+          span:nth-child(4) {
+            margin-right: 0px;
+          }
+          /*span.mortgage{*/
+          /*background: rgba(249,170,68,0.66);*/
+          /*color: rgba(4,16,46,0.43);*/
+          /*}*/
+          span.active{
+            color: #fff;
+            background: #47A9FF;
+          }
+          /*span.mortgage.active{*/
+          /*background: #F9AA44;*/
+          /*color: #fff;*/
+          /*}*/
+        }
+        .userCount{
+          display: flex;
+          .bt{
+            flex: 1;
+            font-size: 12px;
+            color: #9F9F9F;
+          }
+          .eos{
+            flex: 1;
+            font-size: 12px;
+            color: #9F9F9F;
+          }
+        }
+        .actionBtn{
+          background: #F9AA44;
+          border-radius: 4px;
+          text-align: center;
+          cursor: pointer;
+          padding: 10px 0px;
+          margin: 30px 0px 20px 0px;
+          color: #fff;
+          font-size: 14px;
+        }
+        /*.actionBtn.mortgage{*/
+        /*background: #F9AA44;*/
+        /*}*/
+        /*.actionBtn.redeem{*/
+        /*background: #F87070;*/
+        /*}*/
+        .el-input-group{
+          background-color: #ffffff;
           opacity: 1;
         }
       }

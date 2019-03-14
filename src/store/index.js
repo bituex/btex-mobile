@@ -14,7 +14,8 @@ const state = {
   blances: null,
   banners: null,
   notices: null,
-  lang: null
+  lang: null,
+  theme: 'light'
 };
 const mutations = {
   changeIdentity(state, identity) {
@@ -46,6 +47,9 @@ const mutations = {
   },
   changeLang(state, lang) {
     state.lang = lang;
+  },
+  changeTheme(state, theme) {
+    state.theme = theme;
   }
 };
 const actions = {
@@ -88,6 +92,9 @@ const actions = {
   },
   setLang(context, lang) {
     context.commit('changeLang', lang);
+  },
+  setTheme(context, theme) {
+    context.commit('changeTheme', theme);
   }
 };
 

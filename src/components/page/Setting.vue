@@ -1,7 +1,7 @@
 <template>
-  <div id="master">
-    <div class="page">
-      <div class="weui-cells">
+  <div id="master" :class="theme === 'light' ? 'light' : 'dark'">
+    <div class="page" >
+      <div class="weui-cells" style="margin-top: 0px">
         <!--<router-link to="/upcoin" class="weui-cell weui-cell_access">-->
           <!--<div class="weui-cell__bd">-->
             <!--<p>{{$t("message.up_coin")}}</p>-->
@@ -51,6 +51,15 @@
           <div class="weui-cell__ft">
           </div>
         </router-link>
+
+        <div class="theme">
+          <div class="key">
+            <p>{{$t("message.dark_theme")}}</p>
+          </div>
+          <div class="right">
+            <input class="weui-switch" v-model="setTheme" type="checkbox">
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -59,6 +68,11 @@
 <script>
   export default {
     name: 'Setting',
+    data() {
+      return {
+        setTheme: false
+      };
+    },
     methods: {
       changeLang() {
         var that = this;
@@ -114,13 +128,50 @@
         // );
       }
     },
+    computed: {
+      theme () {
+        return this.$store.state.theme;
+      }
+    },
+    watch: {
+      setTheme: function (newVal) {
+        if (newVal) {
+          this.$store.dispatch('setTheme', 'dark');
+          window.localStorage.setItem('theme', 'dark');
+        } else {
+          this.$store.dispatch('setTheme', 'light');
+          window.localStorage.setItem('theme', 'light');
+        }
+      }
+    },
     created() {
-      // 设置标题
-      // document.title = this.$t('message.setting');
+      if (this.$store.state.theme === 'dark') {
+        this.setTheme = true;
+      } else {
+        this.setTheme = false;
+      }
     }
   };
 </script>
 
 <style scoped>
-
+  .dark{
+    background-color: #2a4862;
+    min-height: 100vh;
+  }
+  .dark .theme{
+      color: #ffffff;
+      border-top: 10px solid #1F3547;
+      border-bottom: 10px solid #1F3547;
+  }
+  .light .theme{
+    color: #000000;
+    border-top: 10px solid #f8f8f8;
+    border-bottom: 10px solid #f8f8f8;
+  }
+  .theme{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+  }
 </style>

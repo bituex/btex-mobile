@@ -225,129 +225,261 @@
 </script>
 
 <style lang="scss" scoped>
-  .coins-marks{
-    position: fixed;
-    width: 100%;
-    top: 0px;
-    left: 0px;
-    bottom: 0px;
-    z-index: 9999;
-    background-color: rgba(0,0,0,0.5);
-    .coins{
-      width: 70%;
-      height: 100%;
-      position: absolute;
+  .dark{
+    .coins-marks{
+      position: fixed;
+      width: 100%;
       top: 0px;
       left: 0px;
       bottom: 0px;
-      background-color: #1F3548;
       z-index: 9999;
-      padding: 15px;
-      box-sizing: border-box;
-      padding-bottom: 50px;
-      .search{
-        .form-control {
-          display: block;
-          width: 100%;
-          padding: 8px 12px;
-          font-size: 0.875rem;
-          line-height: 1.42857143;
-          color: #fff;
-          background: #192937;
-          background-image: url("../../assets/img/searchh.png");
-          border: none;
-          border-radius: 4px;
-          -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-          -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-          -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+      background-color: rgba(0,0,0,0.5);
+      .coins{
+        width: 70%;
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        background-color: #1F3548;
+        z-index: 9999;
+        padding: 15px;
+        box-sizing: border-box;
+        padding-bottom: 50px;
+        .search{
+          .form-control {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 0.875rem;
+            line-height: 1.42857143;
+            color: #fff;
+            background: #192937;
+            background-image: url("../../assets/img/searchh.png");
+            border: none;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            box-sizing: border-box;
+            outline:none;
+            background-repeat: no-repeat;
+            background-size: 15px;
+            background-position: 10px center;
+            padding-left: 30px;
+          }
+        }
+        .coins-list{
+          padding: 0px;
+          font-size: 0.8125rem;
+          height: 100%;
+          overflow-y: auto;
           box-sizing: border-box;
-          outline:none;
-          background-repeat: no-repeat;
-          background-size: 15px;
-          background-position: 10px center;
-          padding-left: 30px;
+          .tableText {
+            font-size: 0.75rem;
+            color: #aaa;
+          }
+          li{
+            line-height: 40px;
+            list-style: none;
+            display: flex;
+            padding: 0px 10px;
+            .coin-name{
+              flex: 2;
+              text-align: left;
+            }
+            .coin-price{
+              flex: 1;
+              text-align: right;
+            }
+            .coin-change{
+              flex: 1;
+              text-align: right;
+              padding-left: 10px;
+            }
+            .coin-change.red{
+              color: #FF8181;
+            }
+            .coin-change.green{
+              color: #14BC63;
+            }
+            span{
+              color: #828688;
+            }
+          }
+          li.active{
+            span{
+              color: #fff;
+            }
+          }
+          .caret-wrapper{
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            height: 34px;
+            width: 14px;
+            vertical-align: middle;
+            cursor: pointer;
+            overflow: initial;
+            position: relative;
+            .sort-caret {
+              width: 0;
+              height: 0;
+              border: 5px solid transparent;
+              position: absolute;
+              left: 2px;
+            }
+            .ascending {
+              border-bottom-color: #878787;
+              top: 5px;
+            }
+            .descending {
+              /*border-top-color: #278eda;*/
+              border-top-color: #878787;
+              bottom: 7px;
+            }
+          }
+          .caret-wrapper.up{
+            .ascending {
+              border-bottom-color: #278eda;
+            }
+          }
+          .caret-wrapper.down{
+            .descending {
+              border-top-color: #278eda;
+            }
+          }
         }
       }
-      .coins-list{
-        padding: 0px;
-        font-size: 0.8125rem;
+    }
+  }
+  .light {
+    .coins-marks{
+      position: fixed;
+      width: 100%;
+      top: 0px;
+      left: 0px;
+      bottom: 0px;
+      z-index: 9999;
+      background-color: rgba(0,0,0,0.5);
+      .coins{
+        width: 70%;
         height: 100%;
-        overflow-y: auto;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        background-color: #ffffff;
+        z-index: 9999;
+        padding: 15px;
         box-sizing: border-box;
-        .tableText {
-          font-size: 0.75rem;
-          color: #aaa;
-        }
-        li{
-          line-height: 40px;
-          list-style: none;
-          display: flex;
-          padding: 0px 10px;
-          .coin-name{
-          flex: 2;
-          text-align: left;
-          }
-          .coin-price{
-          flex: 1;
-          text-align: right;
-          }
-          .coin-change{
-          flex: 1;
-          text-align: right;
-          padding-left: 10px;
-          }
-          .coin-change.red{
-          color: #FF8181;
-          }
-          .coin-change.green{
-          color: #14BC63;
-          }
-          span{
-            color: #828688;
+        padding-bottom: 50px;
+        .search{
+          .form-control {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 0.875rem;
+            line-height: 1.42857143;
+            color: #262626;
+            background: #ffffff;
+            background-image: url("../../assets/img/searchh.png");
+            border: 1px solid #f8f8f8;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            box-sizing: border-box;
+            outline:none;
+            background-repeat: no-repeat;
+            background-size: 15px;
+            background-position: 10px center;
+            padding-left: 30px;
           }
         }
-        li.active{
-          span{
-            color: #fff;
+        .coins-list{
+          padding: 0px;
+          font-size: 0.8125rem;
+          height: 100%;
+          overflow-y: auto;
+          box-sizing: border-box;
+          .tableText {
+            font-size: 0.75rem;
+            color: #aaa;
           }
-        }
-        .caret-wrapper{
-          display: inline-flex;
-          flex-direction: column;
-          align-items: center;
-          height: 34px;
-          width: 14px;
-          vertical-align: middle;
-          cursor: pointer;
-          overflow: initial;
-          position: relative;
-          .sort-caret {
-            width: 0;
-            height: 0;
-            border: 5px solid transparent;
-            position: absolute;
-            left: 2px;
+          li{
+            line-height: 40px;
+            list-style: none;
+            display: flex;
+            padding: 0px 10px;
+            .coin-name{
+              flex: 2;
+              text-align: left;
+            }
+            .coin-price{
+              flex: 1;
+              text-align: right;
+            }
+            .coin-change{
+              flex: 1;
+              text-align: right;
+              padding-left: 10px;
+            }
+            .coin-change.red{
+              color: #FF8181;
+            }
+            .coin-change.green{
+              color: #14BC63;
+            }
+            span{
+              color: #828688;
+            }
           }
-          .ascending {
-            border-bottom-color: #878787;
-            top: 5px;
+          li.active{
+            span{
+              color: #262626;
+            }
           }
-          .descending {
-            /*border-top-color: #278eda;*/
-            border-top-color: #878787;
-            bottom: 7px;
+          .caret-wrapper{
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            height: 34px;
+            width: 14px;
+            vertical-align: middle;
+            cursor: pointer;
+            overflow: initial;
+            position: relative;
+            .sort-caret {
+              width: 0;
+              height: 0;
+              border: 5px solid transparent;
+              position: absolute;
+              left: 2px;
+            }
+            .ascending {
+              border-bottom-color: #878787;
+              top: 5px;
+            }
+            .descending {
+              /*border-top-color: #278eda;*/
+              border-top-color: #878787;
+              bottom: 7px;
+            }
           }
-        }
-        .caret-wrapper.up{
-          .ascending {
-            border-bottom-color: #278eda;
+          .caret-wrapper.up{
+            .ascending {
+              border-bottom-color: #278eda;
+            }
           }
-        }
-        .caret-wrapper.down{
-          .descending {
-            border-top-color: #278eda;
+          .caret-wrapper.down{
+            .descending {
+              border-top-color: #278eda;
+            }
           }
         }
       }

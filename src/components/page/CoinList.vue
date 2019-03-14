@@ -1,10 +1,33 @@
 <template>
-  <div id="master">
+  <div id="master" :class="theme === 'light' ? 'light' : 'dark'">
     <div class="page">
       <div class="add-coin">
         <button class="weui-btn" @click="addCoinAction">{{$t("message.up_coin_self")}}</button>
       </div>
       <div class="coins">
+        <!--<div class="coin">-->
+          <!--<div class="top">-->
+            <!--<div class="coin-name">CNY</div>-->
+            <!--<div class="coin-action">-->
+              <!--<div class="o-action" @click="transferAction(1)">{{$t("message.coin_transfer")}}</div>-->
+              <!--<div class="o-action" @click="delCoin(1)">{{$t("message.coin_offline")}}</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="bottom">-->
+            <!--<div class="contract">-->
+              <!--<div class="key">{{$t("message.contract")}}</div>-->
+              <!--<div class="value">eosbtextoken</div>-->
+            <!--</div>-->
+            <!--<div class="user">-->
+              <!--<div class="key">{{$t("message.coin_user")}}</div>-->
+              <!--<div class="value">eosbtextoken</div>-->
+            <!--</div>-->
+            <!--<div class="amount">-->
+              <!--<div class="key">{{$t("message.mortgage_amount")}}</div>-->
+              <!--<div class="value">5000</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
         <div class="coin" v-for="(item,index) in coins" :key="index">
           <div class="top">
             <div class="coin-name">{{item.asset_symbol}}</div>
@@ -99,6 +122,9 @@
       },
       contractCoins: function () {
         return this.$store.state.contractCoins;
+      },
+      theme () {
+        return this.$store.state.theme;
       }
     },
     methods: {
@@ -382,126 +408,257 @@
 </script>
 
 <style lang="scss" scoped>
-  .add-coin{
-    padding: 30px 30px;
+  .dark{
     background-color: #1F3547;
-    button{
-      background: #F9AA44;
-      font-size: 14px;
-      color: #fff;
-      padding: 10px;
-      line-height: 1.6em;
+    min-height: 100vh;
+    box-sizing: border-box;
+    .add-coin{
+      padding: 30px 30px;
+      background-color: #2C4962;
+      button{
+        background: #F9AA44;
+        font-size: 14px;
+        color: #fff;
+        padding: 10px;
+        line-height: 1.6em;
+      }
     }
-  }
-  .coins {
-    padding: 4px 0px;
-    .coin {
-      margin-bottom: 4px;
-      background-color: #1F3547;
-      padding: 10px 15px;
-      .top {
-        display: flex;
-        .coin-name {
-          font-size: 1rem;
-          color: #FFFFFF;
-          flex: 1;
-          line-height: 26px;
-        }
-        .coin-action {
-          width: 140px;
+    .coins {
+      padding: 4px 0px;
+      .coin {
+        margin-bottom: 4px;
+        background-color: #1F3547;
+        padding: 10px 15px;
+        .top {
           display: flex;
-          .o-action {
+          .coin-name {
+            font-size: 1rem;
+            color: #FFFFFF;
             flex: 1;
-            border: 1px solid #47A9FF;
-            border-radius: 3px;
-            font-size: 0.75rem;
-            color: #47A9FF;
-            text-align: center;
-            margin-left: 20px;
             line-height: 26px;
+          }
+          .coin-action {
+            width: 140px;
+            display: flex;
+            .o-action {
+              flex: 1;
+              border: 1px solid #47A9FF;
+              border-radius: 3px;
+              font-size: 0.75rem;
+              color: #47A9FF;
+              text-align: center;
+              margin-left: 20px;
+              line-height: 26px;
+            }
+          }
+        }
+        .bottom {
+          margin-top: 20px;
+          display: flex;
+          .contract {
+            flex: 1;
+          }
+          .user {
+            flex: 1;
+          }
+          .amount {
+            flex: 1;
+          }
+          .contract .key, .user .key, .amount .key {
+            font-size: 0.75rem;
+            color: #FFFFFF;
+            opacity: 0.5;
+          }
+          .contract .value, .user .value, .amount .value {
+            font-size: 0.75rem;
+            color: #FFFFFF;
+            opacity: 0.5;
           }
         }
       }
-      .bottom {
-        margin-top: 20px;
-        display: flex;
-        .contract {
-          flex: 1;
+    }
+
+    .coins-none {
+      padding: 10px;
+      text-align: center;
+      font-size: 0.875rem;
+      color: #fff;
+    }
+    .el-dialog{
+      .actionBox{
+        padding: 10px;
+        .actionName{
+          font-size: 1.5rem;
+          color: #ffffff;
+          text-align: center;
+          padding-bottom: 30px;
         }
-        .user {
-          flex: 1;
-        }
-        .amount {
-          flex: 1;
-        }
-        .contract .key, .user .key, .amount .key {
+        .userCount{
+          display: flex;
+          opacity: 0.51;
           font-size: 0.75rem;
-          color: #FFFFFF;
-          opacity: 0.5;
+          color: #ffffff;
         }
-        .contract .value, .user .value, .amount .value {
-          font-size: 0.75rem;
-          color: #FFFFFF;
-          opacity: 0.5;
+        .userCount.error{
+          color: red;
+        }
+        .actionBtn{
+          background: #F87070;
+          border-radius: 4px;
+          text-align: center;
+          cursor: pointer;
+          padding: 10px 0px;
+          margin: 30px 0px 20px 0px;
+          color: #fff;
+          font-size: 0.875rem;
+        }
+        .actionBtn.mortgage{
+          background: #F9AA44;
+        }
+        .form-control {
+          display: block;
+          width: 100%;
+          padding: 10px 12px;
+          font-size: 0.875rem;
+          line-height: 1.42857143;
+          color: #fff;
+          background: #192937;
+          border: 1px solid #466E91;
+          border-radius: 4px;
+          -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+          -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+          -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+          box-sizing: border-box;
+          outline:none;
         }
       }
     }
   }
-
-  .coins-none {
-    padding: 10px;
-    text-align: center;
-    font-size: 0.875rem;
-    color: #fff;
-  }
-  .el-dialog{
-    .actionBox{
-      padding: 10px;
-      .actionName{
-        font-size: 1.5rem;
-        color: #ffffff;
-        text-align: center;
-        padding-bottom: 30px;
-      }
-      .userCount{
-        display: flex;
-        opacity: 0.51;
-        font-size: 0.75rem;
-        color: #ffffff;
-      }
-      .userCount.error{
-        color: red;
-      }
-      .actionBtn{
-        background: #F87070;
-        border-radius: 4px;
-        text-align: center;
-        cursor: pointer;
-        padding: 10px 0px;
-        margin: 30px 0px 20px 0px;
-        color: #fff;
-        font-size: 0.875rem;
-      }
-      .actionBtn.mortgage{
+  .light {
+    background-color: #f8f8f8;
+    .add-coin{
+      padding: 30px 30px;
+      background-color: #ffffff;
+      button{
         background: #F9AA44;
+        font-size: 14px;
+        color: #ffffff;
+        padding: 10px;
+        line-height: 1.6em;
       }
-      .form-control {
-        display: block;
-        width: 100%;
-        padding: 10px 12px;
-        font-size: 0.875rem;
-        line-height: 1.42857143;
-        color: #fff;
-        background: #192937;
-        border: 1px solid #466E91;
-        border-radius: 4px;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-        -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-        box-sizing: border-box;
-        outline:none;
+    }
+    .coins {
+      padding: 4px 0px;
+      .coin {
+        margin-bottom: 4px;
+        background-color: #ffffff;
+        padding: 10px 15px;
+        .top {
+          display: flex;
+          .coin-name {
+            font-size: 1rem;
+            color: #262626;
+            flex: 1;
+            line-height: 26px;
+          }
+          .coin-action {
+            width: 140px;
+            display: flex;
+            .o-action {
+              flex: 1;
+              border: 1px solid #47A9FF;
+              border-radius: 3px;
+              font-size: 0.75rem;
+              color: #47A9FF;
+              text-align: center;
+              margin-left: 20px;
+              line-height: 26px;
+            }
+          }
+        }
+        .bottom {
+          margin-top: 20px;
+          display: flex;
+          .contract {
+            flex: 1;
+          }
+          .user {
+            flex: 1;
+          }
+          .amount {
+            flex: 1;
+          }
+          .contract .key, .user .key, .amount .key {
+            font-size: 0.75rem;
+            color: #262626;
+            opacity: 0.5;
+          }
+          .contract .value, .user .value, .amount .value {
+            font-size: 0.75rem;
+            color: #262626;
+            opacity: 0.5;
+          }
+        }
+      }
+    }
+
+    .coins-none {
+      padding: 10px;
+      text-align: center;
+      font-size: 0.875rem;
+      color: #262626;
+    }
+    .el-dialog{
+      .actionBox{
+        padding: 10px;
+        .actionName{
+          font-size: 1.5rem;
+          color: #262626;
+          text-align: center;
+          padding-bottom: 30px;
+        }
+        .userCount{
+          display: flex;
+          opacity: 0.51;
+          font-size: 0.75rem;
+          color: #262626;
+        }
+        .userCount.error{
+          color: red;
+        }
+        .actionBtn{
+          background: #F87070;
+          border-radius: 4px;
+          text-align: center;
+          cursor: pointer;
+          padding: 10px 0px;
+          margin: 30px 0px 20px 0px;
+          color: #ffffff;
+          font-size: 0.875rem;
+        }
+        .actionBtn.mortgage{
+          background: #F9AA44;
+        }
+        .form-control {
+          display: block;
+          width: 100%;
+          padding: 10px 12px;
+          font-size: 0.875rem;
+          line-height: 1.42857143;
+          color: #262626;
+          background: #ffffff;
+          border: 1px solid #9F9F9F;
+          border-radius: 4px;
+          -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+          -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+          -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+          box-sizing: border-box;
+          outline:none;
+        }
       }
     }
   }

@@ -210,10 +210,19 @@
     margin: 0;
     background-color: rgba(0,0,0,0.5);
   }
-  .el-dialog {
+  .dark .el-dialog {
     position: relative;
     margin: 0 auto 50px;
     background: #1F3547;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    box-sizing: border-box;
+    width: 90%;
+  }
+  .light .el-dialog {
+    position: relative;
+    margin: 0 auto 50px;
+    background: #ffffff;
     border-radius: 2px;
     box-shadow: 0 1px 3px rgba(0,0,0,.3);
     box-sizing: border-box;

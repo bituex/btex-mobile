@@ -1,10 +1,11 @@
 <template>
-  <div class="page">
+  <div class="page" :class="theme === 'light' ? 'light' : 'dark'">
     <div class="user-info">
       <div class="account-name">{{account.name}}</div>
       <div class="setting" @click="settingAction">
         <!--<i class="fa fa-cog"></i>-->
-        <img src="../../assets/img/setting.png"/>
+        <img v-if="theme === 'dark'" src="../../assets/img/setting.png"/>
+        <img v-if="theme === 'light'" src="../../assets/img/setting_light.png"/>
       </div>
     </div>
     <div class="user">
@@ -129,7 +130,10 @@
       serverCoins: state => state.serverCoins,
       costCoins: state => state.costCoins,
       blances: state => state.blances,
-      basetokens: state => state.basetokens
+      basetokens: state => state.basetokens,
+      theme () {
+        return this.$store.state.theme;
+      }
     }),
     methods: {
       // 计算涨跌幅
@@ -384,7 +388,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .page {
+  .page.dark {
     .user-info {
       display: flex;
       padding: 15px 15px 10px 15px;
@@ -518,6 +522,149 @@
               flex: 1;
               font-size: 0.75rem;
               color: #5A81A3;
+              .key {
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .page.light {
+    .user-info {
+      display: flex;
+      padding: 15px 15px 10px 15px;
+      position: fixed;
+      box-sizing: border-box;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      background: #ffffff;
+      height: 53px;
+      box-sizing: border-box;
+      z-index: 999;
+      .account-name {
+        font-size: 0.875rem;
+        color: #262626;
+        flex: 1;
+      }
+      .setting {
+        width: 24px;
+        color: #262626;
+        img {
+          width: 20px;
+          height: 19px;
+        }
+        i {
+          font-size: 24px;
+        }
+      }
+    }
+    .user {
+      padding: 53px 15px 0px 15px;
+      background: #ffffff;
+      height: 142px;
+      position: relative;
+      .user-asset {
+        background-image: linear-gradient(-225deg, #F76B1C 0%, #FAD961 100%);
+        border-radius: 6px;
+        .account-total {
+          font-size: 0.875rem;
+          color: #FFFFFF;
+          padding: 20px 20px 0px 20px;
+          height: 52px;
+          box-sizing: border-box;
+        }
+        .account-total-value {
+          font-size: 1.875rem;
+          color: #FFFFFF;
+          padding: 20px;
+          height: 88px;
+          box-sizing: border-box;
+        }
+        .account-data {
+          border-top: 2px solid rgba(248, 248, 248, 0.23);
+          display: flex;
+          font-size: 0.875rem;
+          color: #FFFFFF;
+          text-align: center;
+          padding: 12px 0px;
+          height: 48px;
+          box-sizing: border-box;
+          box-sizing: border-box;
+          .current {
+            flex: 1;
+            /*border-right: 1px solid rgba(248, 248, 248, 0.33);*/
+            a {
+              color: #fff;
+            }
+          }
+          .history {
+            flex: 1;
+            border-left: 1px solid rgba(248, 248, 248, 0.33);
+            a {
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+    .assets {
+      background-color: #ffffff;
+      padding: 50px 0px;
+      min-height: calc(100% - 205px);
+      box-sizing: border-box;
+      .assets-title {
+        padding: 10px 0px;
+        display: flex;
+        .actions {
+          flex: 1;
+        }
+        .search {
+          flex: 1;
+          .search-text {
+            -webkit-appearance: none;
+            opacity: 0.5;
+            background: transparent;
+            border: 1px solid #9f9f9f;
+            border-radius: 15px;
+            padding: 6px 10px;
+            background-image: url("../../assets/img/searchh.png");
+            background-position: right 10px center;
+            background-repeat: no-repeat;
+            background-size: 16px 16px;
+            margin-right: 15px;
+            width: 140px;
+            float: right;
+            outline: none;
+            color: #9f9f9f;
+          }
+        }
+      }
+      .assets-list {
+        padding: 0px 15px;
+        .asset {
+          border-bottom: 1px solid #F8F8F8;
+          padding: 10px 0px;
+          .top {
+            display: flex;
+            font-size: 0.875rem;
+            color: #262626;
+            margin-bottom: 8px;
+            .coin-name {
+              flex: 1;
+            }
+            .coin-blance {
+              flex: 2;
+            }
+          }
+          .bottom {
+            display: flex;
+            .item {
+              flex: 1;
+              font-size: 0.75rem;
+              color: #9F9F9F;
               .key {
               }
             }

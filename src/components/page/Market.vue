@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+    <div class="page" :class="theme === 'light' ? 'light' : 'dark'">
       <div class="market">
         <div class="tabs">
           <div class="group">
@@ -17,7 +17,10 @@
             </div>
           </div>
           <div class="search">
-            <div class="search-btn" @click="searchAction"><img src="../../assets/img/search.png"></div>
+            <div class="search-btn" @click="searchAction">
+              <img src="../../assets/img/search_dark.png" v-if="theme === 'dark'">
+              <img src="../../assets/img/search_light.png" v-if="theme === 'light'">
+            </div>
           </div>
         </div>
         <div class="sort">
@@ -92,7 +95,10 @@ export default {
     identity: state => state.identity,
     contractCoins: state => state.contractCoins,
     serverCoins: state => state.serverCoins,
-    basetokens: state => state.basetokens
+    basetokens: state => state.basetokens,
+    theme () {
+      return this.$store.state.theme;
+    }
   }),
   watch: {
     identity: function (newIdentity) {
@@ -415,7 +421,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .market{
+  .dark .market{
     position: relative;
     overflow: auto;
     padding-bottom: 50px;
@@ -574,6 +580,183 @@ export default {
           .price-cny{
             font-size: 0.75rem;
             color: #818181;
+          }
+        }
+        .increase{
+          flex: 1;
+          padding: 7.2px 0px;
+          .increase-value{
+            background: #5AB36D;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            color: #FFFFFF;
+            text-align: center;
+            padding: 4px 0px;
+          }
+        }
+      }
+    }
+  }
+
+  .light .market{
+    position: relative;
+    overflow: auto;
+    padding-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 78px;
+    /*height: calc(100vh - 50px);*/
+    .tabs{
+      display: flex;
+      padding: 0px 15px;
+      background-color: #ffffff;
+      height: 44px;
+      position: fixed;
+      top: 0px;
+      width: 100%;
+      max-width: 768px;
+      box-sizing: border-box;
+      z-index: 100;
+      .group{
+        flex: 1;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 8px 0px;
+        .group-item{
+          font-size: 0.875rem;
+          color: #262626;
+          margin-right: 15px;
+          box-sizing: border-box;
+          text-align: center;
+          display: inline-block;
+        }
+        .group-item.on{
+          color: #F9AA44;
+          border-bottom: 2px solid #F9AA44;
+        }
+      }
+      .search{
+        width: 40px;
+        text-align: right;
+        .search-btn{
+          float: right;
+          padding: 12px 10px;
+          cursor: pointer;
+          img{
+            width: 16px;
+          }
+        }
+      }
+    }
+    .sort{
+      display: flex;
+      padding: 0px 15px 0px 15px;
+      font-size: 0.875rem;
+      color: #262626;
+      height: 34px;
+      background-color: #ffffff;
+      position: fixed;
+      top: 44px;
+      width: 100%;
+      box-sizing: border-box;
+      z-index: 100;
+      .pair{
+        flex: 2;
+      }
+      .price {
+        flex: 1.2;
+      }
+      .increase{
+        flex: 1;
+        text-align: center;
+      }
+      .caret-wrapper{
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        height: 34px;
+        width: 14px;
+        vertical-align: middle;
+        cursor: pointer;
+        overflow: initial;
+        position: relative;
+        .sort-caret {
+          width: 0;
+          height: 0;
+          border: 5px solid transparent;
+          position: absolute;
+          left: 2px;
+        }
+        .ascending {
+          border-bottom-color: #878787;
+          top: 5px;
+        }
+        .descending {
+          /*border-top-color: #278eda;*/
+          border-top-color: #878787;
+          bottom: 7px;
+        }
+      }
+      .caret-wrapper.up{
+        .ascending {
+          border-bottom-color: #278eda;
+        }
+      }
+      .caret-wrapper.down{
+        .descending {
+          border-top-color: #278eda;
+        }
+      }
+    }
+    .coins {
+      padding: 5px 15px;
+      background-color: #ffffff;
+      /*height: calc(100% - 45px);*/
+      overflow: auto;
+      .coin{
+        margin-bottom: 15px;
+        display: flex;
+        .pair{
+          flex: 2;
+          position: relative;
+          padding-left: 40px;
+          .logo{
+            width: 32px;
+            position: absolute;
+            left: 0px;
+            top: 3px;
+            border-radius: 16px;
+            background: #fff;
+          }
+          .coin-name{
+            font-size: 1rem;
+            color: #262626;
+            .start-icons{
+              padding-left: 0px;
+              img{
+                width: 8px;
+                height: 8px;
+                margin-right: 1px;
+                vertical-align: middle;
+              }
+            }
+          }
+          .volume{
+            font-size: 0.75rem;
+            color: #9F9F9F;
+          }
+        }
+        .price{
+          flex: 1;
+          padding-top: 2px;
+          .price-eos{
+            font-size: 0.875rem;
+            color: #14BC63;
+          }
+          .price-cny{
+            font-size: 0.75rem;
+            color: #9F9F9F;
           }
         }
         .increase{

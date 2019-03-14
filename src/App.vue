@@ -13,6 +13,13 @@ ScatterJS.plugins(new ScatterEOS());
 export default {
   name: 'App',
   created () {
+    // 设置主题
+    let themeNow = window.localStorage.getItem('theme');
+    if (themeNow) {
+      this.$store.dispatch('setTheme', themeNow);
+    } else {
+      window.localStorage.setItem('theme', this.$store.state.theme);
+    }
     // 设置用户的语言
     console.log(util.getUrlParam('locale'));
     let lang = util.getUrlParam('locale') || navigator.language || navigator.userLanguage;

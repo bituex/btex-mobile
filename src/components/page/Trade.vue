@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+    <div class="page" :class="theme === 'light' ? 'light' : 'dark'">
       <div class="trade-page">
         <div class="tarde-container">
           <div class="full-left">
@@ -119,7 +119,7 @@
                         <div class="o-top">
                           <span class="o-type buy" v-if="item.typeKey==='buy'">{{$t("message.buy")}}</span>
                           <span class="o-type sell" v-if="item.typeKey==='sell'">{{$t("message.sell")}}</span>
-                          <span class="o-type" style="color: #fff">{{item.token_name + '/' + getBaseTokenStr(item.token_base_id)}}</span>
+                          <span class="o-type">{{item.token_name + '/' + getBaseTokenStr(item.token_base_id)}}</span>
                           <span class="o-time">{{item.time}}</span>
                         </div>
                         <div class="o-bottom" v-if="item.typeKey==='buy'">
@@ -160,7 +160,7 @@
                         <div class="o-top">
                           <span class="o-type buy" v-if="item.buy_account == account.name">{{$t("message.buy")}}</span>
                           <span class="o-type sell" v-if="item.sell_account == account.name">{{$t("message.sell")}}</span>
-                          <span class="o-type" style="color: #fff">{{item.token_name + '/' + getBaseTokenStr(item.token_base_id)}}</span>
+                          <span class="o-type">{{item.token_name + '/' + getBaseTokenStr(item.token_base_id)}}</span>
                           <span class="o-time">{{item.create_date}}</span>
                         </div>
                         <div class="o-bottom">
@@ -353,6 +353,9 @@
         } else {
           return 0;
         }
+      },
+      theme () {
+        return this.$store.state.theme;
       }
     },
     components: {
@@ -1414,7 +1417,7 @@
   };
 </script>
 <style lang="scss" scoped>
-  .page{
+  .page.dark{
     padding-bottom: 50px;
     .trade-page {
       /*min-height: 100vh;*/
@@ -1784,6 +1787,7 @@
                   .o-type{
                     font-size: 0.875rem;
                     padding-right: 10px;
+                    color: #fff
                   }
                   .o-type.buy{
                     color: #14BC63;
@@ -1840,7 +1844,457 @@
                   right: 10px;
                   font-size: 0.75rem;
                   color: #47A9FF;
-                  padding: 6px 10px;
+                  padding: 2px 10px;
+                  cursor: pointer;
+                  border: 1px solid #47A9FF;
+                  border-radius: 4px;
+                }
+              }
+              .user-order-none{
+                p{
+                  padding: 10px;
+                  text-align: center;
+                  font-size: 0.75rem;
+                  color: #fff;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .page.light{
+    padding-bottom: 50px;
+    .trade-page {
+      /*min-height: 100vh;*/
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      .tarde-container {
+        height: 100%;
+        .full-left {
+          height: 100%;
+          display: flex;
+          -webkit-box-orient: vertical;
+          flex-direction: column;
+          flex: 1;
+          box-sizing: border-box;
+          .full-left-top {
+            display: flex;
+            height: 380px;
+            box-sizing: border-box;
+            background: #ffffff;
+            flex-direction: column;
+            position: relative;
+            padding-top: 50px;
+            .coin-info{
+              background: #ffffff;
+              height: 50px;
+              position: fixed;
+              width: 100%;
+              top: 0px;
+              z-index: 100;
+              max-width: 768px;
+              .coin-one{
+                color: #1E1E1E;
+                margin-right: 0px;
+                font-size: 0.75rem;
+                display: flex;
+                width: 100%;
+                line-height: 50px;
+                background-color: #ffffff;
+                .priceandstate{
+                  flex: 1;
+                  /*display: flex;*/
+                  /*.current-price{*/
+                  /*flex: 1.5;*/
+                  /*display: flex;*/
+                  /*flex-direction: column;*/
+                  /*text-align: right;*/
+                  /*line-height: 1em;*/
+                  /*span{*/
+                  /*flex: 1;*/
+                  /*line-height: 1em;*/
+                  /*}*/
+                  /*}*/
+                  .current-state{
+                    padding-left: 10px;
+                    font-size: 0.875rem;
+                    color: #fff;
+                    text-align: right;
+                    padding-right: 10px;
+                    span{
+                      padding: 8px 10px;
+                      border-radius: 2px;
+                      background-color: #818181;
+                    }
+                  }
+                  .current-price .big{
+                    font-size: 1.125rem;
+                    display: table-cell;
+                    vertical-align: bottom;
+                    padding-top: 10px;
+                  }
+                  .current-state.green  span {
+                    background-color: #14BC63;
+                  }
+                  .current-state.red span {
+                    background-color: #FF8181;
+                  }
+                }
+
+                .coin-name{
+                  flex: 1.6;
+                  /*width: 136px;*/
+                  font-size: 1rem;
+                  /*padding-left: 10px;*/
+                  display: flex;
+                  padding: 10px;
+                  .logo{
+                    width: 26px;
+                    height: 26px;
+                    vertical-align: middle;
+                    border-radius: 13px;
+                    background-color: #fff;
+                    margin-right: 10px;
+                  }
+                  .name{
+                    flex: 1;
+                    p{
+                      line-height: 1em;
+                    }
+                    p.contract-name{
+                      font-size: 0.75rem;
+                      color: #909090;
+                    }
+                  }
+                }
+              }
+            }
+            .full-trade{
+              overflow: hidden;
+              background: #ffffff;
+              display: flex;
+              .ad-select{
+                color: #fff;
+                background: #F8F8F8;
+                display: flex;
+                margin: 10px;
+                text-align: center;
+                font-size: 0.75rem;
+                margin-bottom: 0px;
+                margin-top: 12px;
+                .sell{
+                  flex: 1;
+                  padding: 10px;
+                  color: #9F9F9F;
+                }
+                .buy{
+                  flex: 1;
+                  padding: 10px;
+                  color: #9F9F9F;
+                }
+                .buy.current{
+                  color: #14BC63;
+                  border-bottom: 2px solid #14BC63;
+                }
+                .sell.current{
+                  color: #FF8181;
+                  border-bottom: 2px solid #FF8181;
+                }
+              }
+              .ad-create{
+                width: 54%;
+                .ad-select{
+                }
+                .ad-create-box{
+                  flex: 1;
+                  padding: 12px 10px;
+                  .input-container,.quik-num-btns,.trade-price,.trade-submit{
+                    padding-bottom: 10px;
+                  }
+                  .quik-num-btns{
+                    display: flex;
+                    span{
+                      display: table-cell;
+                      flex: 1;
+                      background: rgba(249, 170, 68, 0.16);
+                      border-radius: 4px;
+                      margin-right: 10px;
+                      padding: 5px;
+                      text-align: center;
+                      font-size: 0.625rem;
+                      color: rgba(135, 135, 135, 1);
+                      cursor: pointer;
+                      vertical-align: middle;
+                    }
+                    span.active{
+                      background: rgb(249, 170, 68);
+                      color: #ffffff;
+                    }
+                    span:nth-child(4){
+                      margin-right: 0px;
+                    }
+                  }
+                  .trade-price{
+                    font-size: 0.625rem;
+                    color: #878787;
+                    /*margin-bottom: 4px;*/
+                  }
+                }
+              }
+              .ad-list{
+                flex: 1;
+                padding: 8px 0px;
+                padding-bottom: 0px;
+                .spot-box {
+                  height: calc(100% - 0px);
+                  width: 100%;
+                  position: relative;
+                  box-sizing: border-box;
+                  .spot-head{
+                    height: 24px;
+                    color: #5A81A3;
+                    padding: 0px 10px;
+                    margin: 0px;
+                    li {
+                      list-style: none;
+                      float: left;
+                      font-size: 0.75rem;
+                      height: 24px;
+                      line-height: 24px;
+                      text-align: right;
+                      width: 50%;
+                    }
+                    li:nth-of-type(3n+1) {
+                      text-align: left;
+                    }
+                  }
+                  .scroll-box{
+                    height: calc(100%);
+                    overflow-y: auto;
+                    padding: 0px 10px;
+                    .ticker{
+                      font-size: 0.9375rem;
+                      height: 28px;
+                      line-height: 28px;
+                      text-align: right;
+                      padding: 0px;
+                      color: #b8b8b8;
+                      span{
+                        width: 50%;
+                        float: left;
+                      }
+                      span:nth-of-type(2n+1) {
+                        text-align: left;
+                      }
+                    }
+                    .down{
+                      color: #F87070;
+                    }
+                    .up{
+                      color: #14BC63;
+                    }
+                    .sell-list {
+                      padding: 0px;
+                      margin: 0px;
+                      li {
+                        list-style: none;
+                        padding: 5px 0px;
+                        height: 16px;
+                        line-height: 16px;
+                        text-align: left;
+                        font-size: 0.75rem;
+                        position: relative;
+                        span {
+                          color: #353535;
+                          display: inline-block;
+                          float: left;
+                          width: 50%;
+                        }
+                        span:nth-of-type(2n) {
+                          text-align: right;
+                        }
+                        span.green {
+                          color: #14BC63;
+                        }
+                        span.red {
+                          color: #F87070;
+                        }
+                        i.ambg {
+                          height: 99%;
+                          position: absolute;
+                          right: 0;
+                          opacity: .3;
+                          top: 50%;
+                          transform: translateY(-50%);
+                          background: RGBA(82,177,109,.35);
+                        }
+                        i.ambg1{
+                          background: RGBA(232,18,52,.5);
+                        }
+                      }
+                    }
+                    .buy-list {
+                      padding: 0px;
+                      margin: 0px;
+                      li {
+                        list-style: none;
+                        padding: 5px 0px;
+                        height: 16px;
+                        line-height: 16px;
+                        text-align: left;
+                        font-size: 0.75rem;
+                        position: relative;
+                        span {
+                          color: #353535;
+                          display: inline-block;
+                          float: left;
+                          width: 50%;
+                        }
+                        span:nth-of-type(2n) {
+                          text-align: right;
+                        }
+                        span.green {
+                          color: #14BC63;
+                        }
+                        span.red {
+                          color: #F87070;
+                        }
+                        i.ambg {
+                          height: 99%;
+                          position: absolute;
+                          right: 0;
+                          opacity: .3;
+                          top: 50%;
+                          transform: translateY(-50%);
+                          background: RGBA(82,177,109,.35);
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .full-left-bottom {
+            flex-grow: 1;
+            margin-bottom: 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            box-sizing: border-box;
+            background: #ffffff;
+            min-height: 300px;
+            .order-trade {
+              font-size: 0.75rem;
+              height: calc(100% - 0px);
+              .order-tab{
+                .tabs{
+                  background: #F8F8F8;
+                  padding: 0 10px;
+                  margin: 0;
+                  .tab-item{
+                    margin-right: 20px;
+                    height: 40px;
+                    box-sizing: border-box;
+                    line-height: 40px;
+                    display: inline-block;
+                    list-style: none;
+                    font-size: 0.75rem;
+                    font-weight: 500;
+                    color: #181818;
+                    opacity: .5;
+                    position: relative;
+                  }
+                  .tab-item.active{
+                    opacity: 1;
+                    border-bottom: 2px solid #F9AA44;
+                  }
+                  .pr{
+                    display: inline-block;
+                    float: right;
+                    line-height: 40px;
+                    span{
+                      color: rgba(159, 159, 159, 1);
+                      padding-right: 4px;
+                    }
+                  }
+                }
+              }
+              .user-order-box{
+                padding: 0px 10px 10px 10px;
+              }
+              .user-order{
+                background: #ffffff;
+                border-radius: 3px;
+                padding: 10px;
+                position: relative;
+                margin-top: 10px;
+                border-bottom: 1px solid #F8F8F8;
+                .o-top{
+                  .o-type{
+                    font-size: 0.875rem;
+                    padding-right: 10px;
+                    color: #474747;
+                  }
+                  .o-type.buy{
+                    color: #14BC63;
+                  }
+                  .o-type.sell{
+                    color: #F87070;
+                  }
+                  .o-time{
+                    font-size: 0.75rem;
+                    color: #474747;
+                  }
+                }
+                .o-bottom{
+                  display: flex;
+                  .o-info{
+                    padding-top: 10px;
+                    flex: 1;
+                    .info-name{
+                      font-size: 0.75rem;
+                      color: #9F9F9F;
+                    }
+                    .info-value{
+                      font-size: 0.75rem;
+                      color: #181818;
+                    }
+                  }
+                  .o-info2{
+                    padding-top: 10px;
+                    flex: 2;
+                    width: 0;
+                    .info-name{
+                      font-size: 0.75rem;
+                      color: #9F9F9F;
+                    }
+                    .info-value{
+                      font-size: 0.75rem;
+                      color: #181818;
+                      a{
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        width: 100%;
+                        display: block;
+                      }
+                    }
+                  }
+                  .o-info:nth-child(1){
+                    flex: 1.2;
+                  }
+                }
+                .o-action{
+                  position: absolute;
+                  top: 10px;
+                  right: 10px;
+                  font-size: 0.75rem;
+                  color: #47A9FF;
+                  padding: 2px 10px;
                   cursor: pointer;
                   border: 1px solid #47A9FF;
                   border-radius: 4px;

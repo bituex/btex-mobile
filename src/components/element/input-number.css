@@ -1,17 +1,25 @@
 @import "input.css";
-.el-input-number {
+.dark .el-input-number {
   position: relative;
   display: inline-block;
-  width: 180px;
   line-height: 38px;
   background: #182937;
   opacity: 0.4;
+}
+.light .el-input-number {
+  position: relative;
+  display: inline-block;
+  line-height: 38px;
+  /*background: #E2E2E2;*/
+  /*opacity: 0.4;*/
+  border-radius: 4px;
+  border: 1px solid #dcdfe6;
 }
 .el-input-number--small {
   width: 100%;
   line-height: 30px;
 }
-.el-input-number__decrease, .el-input-number__increase {
+.dark .el-input-number__decrease, .dark .el-input-number__increase {
   position: absolute;
   z-index: 1;
   top: 0px;
@@ -23,6 +31,29 @@
   font-size: 0.8125rem;
   background: #2A4862;
   color: #fff;
+}
+.light .el-input-number__decrease, .light .el-input-number__increase {
+  position: absolute;
+  z-index: 1;
+  top: 0px;
+  bottom: 0px;
+  width: 40px;
+  height: auto;
+  text-align: center;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  background: #FFFFFF;
+  color: #1E1E1E;
+}
+.light .el-input-number__decrease {
+  left: 0px;
+  border-radius: 4px 0 0 4px;
+  border-right: 1px solid #dcdfe6;
+}
+.light .el-input-number__increase {
+  right: 0px;
+  border-radius: 0px 4px 4px 0px;
+  border-left: 1px solid #dcdfe6;
 }
 .el-input-number__decrease {
   left: 0px;

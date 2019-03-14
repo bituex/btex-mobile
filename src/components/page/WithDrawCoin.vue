@@ -1,5 +1,5 @@
 <template>
-  <div id="master">
+  <div id="master" :class="theme === 'light' ? 'light' : 'dark'">
     <div class="page">
       <div class="up-coin">
         <div class="form-group">
@@ -50,7 +50,7 @@
           <p class="notice">标签(MEMO)可在注册Bituex后充币页面查看</p>
           <p class="bituexwebsite"><a href="https://hema.im/bituex">EOS、USDT、BT法币首选交易所——立即下载Bituex</a></p>
         </div>
-        <button type="submit" @click="onSubmit" class="weui-btn weui-btn_default yellow" style="">{{$t("message.submit")}}</button>
+        <button type="submit" @click="onSubmit" class="weui-btn weui-btn_default yellow" style="">{{$t("message.recharge")}}</button>
       </div>
     </div>
   </div>
@@ -79,7 +79,10 @@
     },
     computed: mapState({
       identity: state => state.identity,
-      scatter: state => state.scatter
+      scatter: state => state.scatter,
+      theme () {
+        return this.$store.state.theme;
+      }
     }),
     watch: {
       identity: function (newIdentity) {
@@ -304,101 +307,202 @@
 </script>
 
 <style lang="scss" scoped>
-  .page {
-    padding: 15px;
-    box-sizing: border-box;
-    background: #1F3547;
-    min-height: 100vh;
-    .up-coin {
-      border-radius: 6px;
-      margin-top: 20px;
-      .form-group {
-        margin-bottom: 15px;
-        label {
-          display: inline-block;
-          max-width: 100%;
-          margin-bottom: 5px;
-          font-size: 13px;
+  .dark{
+    .page {
+      padding: 15px;
+      box-sizing: border-box;
+      background: #1F3547;
+      min-height: 100vh;
+      .up-coin {
+        border-radius: 6px;
+        margin-top: 20px;
+        .form-group {
+          margin-bottom: 15px;
+          label {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-size: 13px;
+            color: #ffffff;
+            font-weight: 400;
+          }
+          label.required:after{
+            content: "*";
+            color: #f56c6c;
+            margin-left: 4px;
+          }
+          .weui-cells{
+            margin-top: 0px;
+          }
+          .weui-cells{
+            font-size: 13px;
+          }
+          .selectCoin{
+            background: #162C39;
+            border-radius: 4px;
+          }
+          .address{
+            border-bottom:  1px solid #2C4962;
+            padding: 10px 0px;
+          }
+          .quantity{
+            border-bottom:  1px solid #2C4962;
+            padding: 10px 0px;
+            color: #ffffff;
+          }
+          .address:hover,.quantity:hover {
+            background-color: transparent;
+          }
+          .weui-vcode-btn{
+            height: auto;
+            line-height: 1em;
+            color: #ffffff;
+            border-left: none;
+            font-size: 13px;
+          }
+          .notice{
+            font-size: 12px;
+            color: #FFFFFF;
+            text-align: center;
+          }
+          .bituexwebsite{
+            text-align: center;
+          }
+          .bituexwebsite a{
+            font-size: 12px;
+            color: #5A81A3;
+            text-align: center;
+          }
+          .form-control {
+            display: block;
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #fff;
+            background-color: transparent;
+            border: 1px solid #466E91;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            box-sizing: border-box;
+            outline:none;
+          }
+          textarea.form-control {
+            height: auto;
+          }
+        }
+        .weui-btn.yellow {
+          background-color: #F9AA44;
           color: #ffffff;
-          font-weight: 400;
+          font-size: 16px;
         }
-        label.required:after{
-          content: "*";
-          color: #f56c6c;
-          margin-left: 4px;
+        .weui-btn.yellow:active{
+          background-color: #f69c28;
         }
-        .weui-cells{
-          margin-top: 0px;
-        }
-        .weui-cells{
-          font-size: 13px;
-        }
-        .selectCoin{
-          background: #162C39;
-          border-radius: 4px;
-        }
-        .address{
-          border-bottom:  1px solid #2C4962;
-          padding: 10px 0px;
-        }
-        .quantity{
-          border-bottom:  1px solid #2C4962;
-          padding: 10px 0px;
-          color: #ffffff;
-        }
-        .address:hover,.quantity:hover {
-          background-color: transparent;
-        }
-        .weui-vcode-btn{
-          height: auto;
-          line-height: 1em;
-          color: #ffffff;
-          border-left: none;
-          font-size: 13px;
-        }
-        .notice{
-          font-size: 12px;
-          color: #FFFFFF;
-          text-align: center;
-        }
-        .bituexwebsite{
-          text-align: center;
-        }
-        .bituexwebsite a{
-          font-size: 12px;
-          color: #5A81A3;
-          text-align: center;
-        }
-        .form-control {
-          display: block;
-          width: 100%;
-          padding: 10px 12px;
-          font-size: 14px;
-          line-height: 1.42857143;
-          color: #fff;
-          background-color: transparent;
-          border: 1px solid #466E91;
-          border-radius: 4px;
-          -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-          -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-          -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-          box-sizing: border-box;
-          outline:none;
-        }
-        textarea.form-control {
-          height: auto;
-        }
-      }
-      .weui-btn.yellow {
-        background-color: #F9AA44;
-        color: #ffffff;
-        font-size: 16px;
-      }
-      .weui-btn.yellow:active{
-        background-color: #f69c28;
       }
     }
   }
+  .light{
+    .page {
+      padding: 15px;
+      box-sizing: border-box;
+      background: #ffffff;
+      min-height: 100vh;
+      .up-coin {
+        border-radius: 6px;
+        margin-top: 20px;
+        .form-group {
+          margin-bottom: 15px;
+          label {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-size: 13px;
+            color: #262626;
+            font-weight: 400;
+          }
+          label.required:after{
+            content: "*";
+            color: #f56c6c;
+            margin-left: 4px;
+          }
+          .weui-cells{
+            margin-top: 0px;
+          }
+          .weui-cells{
+            font-size: 13px;
+          }
+          .selectCoin{
+            background: #F8F8F8;
+            border-radius: 4px;
+          }
+          .address{
+            border-bottom:  1px solid #F8F8F8;
+            padding: 10px 0px;
+          }
+          .quantity{
+            border-bottom:  1px solid #F8F8F8;
+            padding: 10px 0px;
+          }
+          .address:hover,.quantity:hover {
+            background-color: transparent;
+          }
+          .weui-vcode-btn{
+            height: auto;
+            line-height: 1em;
+            color: #47A9FF;
+            border-left: none;
+            font-size: 13px;
+          }
+          .notice{
+            font-size: 12px;
+            color: #262626;
+            text-align: center;
+          }
+          .bituexwebsite{
+            text-align: center;
+          }
+          .bituexwebsite a{
+            font-size: 12px;
+            color: #47A9FF;
+            text-align: center;
+          }
+          .form-control {
+            display: block;
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #fff;
+            background-color: transparent;
+            border: 1px solid #466E91;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            box-sizing: border-box;
+            outline:none;
+          }
+          textarea.form-control {
+            height: auto;
+          }
+        }
+        .weui-btn.yellow {
+          background-color: #F9AA44;
+          color: #ffffff;
+          font-size: 16px;
+        }
+        .weui-btn.yellow:active{
+          background-color: #f69c28;
+        }
+      }
+    }
+  }
+
 </style>

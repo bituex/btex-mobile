@@ -1,5 +1,5 @@
 <template>
-  <div id="master">
+  <div id="master" :class="theme === 'light' ? 'light' : 'dark'">
     <div class="page">
       <div class="up-coin">
         <!--<div class="form-group">-->
@@ -23,7 +23,7 @@
               <ul class="weui-uploader__files" id="uploaderFiles">
                 <li class="weui-uploader__file" v-if="joinCoin.imageUrl!=''" :style="'background-image:url('+ joinCoin.imageUrl +')'"></li>
               </ul>
-              <div class="weui-uploader__input-box" style="border: 1px solid #466E91;border-radius: 4px;">
+              <div class="weui-uploader__input-box">
                 <input class="weui-uploader__input" @change="uploadPicAction($event)" type="file" accept="image/*">
               </div>
             </div>
@@ -37,7 +37,7 @@
           <label for="intro">{{$t("message.intro")}}</label>
           <textarea id="intro" class="form-control" v-model="joinCoin.coinInfo" rows="3" :placeholder="$t('message.input_intro')"></textarea>
         </div>
-        <button type="submit" @click="onSubmit" class="weui-btn weui-btn_default yellow" style="margin-top: 36px">{{$t("message.submit")}}</button>
+        <button type="submit" @click="onSubmit" class="weui-btn weui-btn_default yellow" style="margin-top: 36px">{{$t("message.up_coin")}}</button>
       </div>
     </div>
   </div>
@@ -71,7 +71,10 @@
     computed: mapState({
       identity: state => state.identity,
       scatter: state => state.scatter,
-      basetokens: state => state.basetokens
+      basetokens: state => state.basetokens,
+      theme () {
+        return this.$store.state.theme;
+      }
     }),
     watch: {
       identity: function (newIdentity) {
@@ -320,54 +323,121 @@
 </script>
 
 <style lang="scss" scoped>
-  .page {
-    padding: 15px;
+  .dark{
+    background-color: #1F3547;
+    min-height: 100vh;
     box-sizing: border-box;
-    .up-coin {
-      border-radius: 6px;
-      .form-group {
-        margin-bottom: 15px;
-        label {
-          display: inline-block;
-          max-width: 100%;
-          margin-bottom: 5px;
-          font-size: 14px;
+    .page {
+      padding: 15px;
+      box-sizing: border-box;
+      .up-coin {
+        border-radius: 6px;
+        .form-group {
+          margin-bottom: 15px;
+          label {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #ffffff;
+            font-weight: 400;
+          }
+          label.required:after{
+            content: "*";
+            color: #f56c6c;
+            margin-left: 4px;
+          }
+          .form-control {
+            display: block;
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #fff;
+            background-color: transparent;
+            border: 1px solid #466E91;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            box-sizing: border-box;
+            outline:none;
+          }
+          textarea.form-control {
+            height: auto;
+          }
+          .weui-uploader__input-box{
+            border: 1px solid #466E91;
+            border-radius: 4px;
+          }
+        }
+        .weui-btn.yellow {
+          background-color: #F9AA44;
           color: #ffffff;
-          font-weight: 400;
         }
-        label.required:after{
-          content: "*";
-          color: #f56c6c;
-          margin-left: 4px;
-        }
-        .form-control {
-          display: block;
-          width: 100%;
-          padding: 10px 12px;
-          font-size: 14px;
-          line-height: 1.42857143;
-          color: #fff;
-          background-color: transparent;
-          border: 1px solid #466E91;
-          border-radius: 4px;
-          -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-          -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-          -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-          box-sizing: border-box;
-          outline:none;
-        }
-        textarea.form-control {
-          height: auto;
+        .weui-btn.yellow:active{
+          background-color: #f69c28;
         }
       }
-      .weui-btn.yellow {
-        background-color: #F9AA44;
-        color: #ffffff;
-      }
-      .weui-btn.yellow:active{
-        background-color: #f69c28;
+    }
+  }
+  .light {
+    background-color: #ffffff;
+    .page {
+      padding: 15px;
+      box-sizing: border-box;
+      .up-coin {
+        border-radius: 6px;
+        .form-group {
+          margin-bottom: 15px;
+          label {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #262626;
+            font-weight: 400;
+          }
+          label.required:after{
+            content: "*";
+            color: #f56c6c;
+            margin-left: 4px;
+          }
+          .form-control {
+            display: block;
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #262626;
+            background-color: transparent;
+            border: 1px solid #9F9F9F;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            box-sizing: border-box;
+            outline:none;
+          }
+          textarea.form-control {
+            height: auto;
+          }
+          .weui-uploader__input-box{
+            border: 1px solid #9F9F9F;
+            border-radius: 4px;
+          }
+        }
+        .weui-btn.yellow {
+          background-color: #F9AA44;
+          color: #ffffff;
+        }
+        .weui-btn.yellow:active{
+          background-color: #f69c28;
+        }
       }
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <div id="master">
+  <div id="master" :class="theme === 'light' ? 'light' : 'dark'">
     <transition name="fade" mode="out-in">
       <router-view/>
     </transition>
@@ -18,6 +18,11 @@
       },
       components: {
         WeuiTabbar
+      },
+      computed: {
+        theme () {
+          return this.$store.state.theme;
+        }
       },
       created() {
         var path = this.$route.path;
@@ -39,5 +44,12 @@
 <style scoped>
   #master {
     position: relative;
+  }
+  .light{
+    background-color: #F8F8F8;;
+  }
+  .dark{
+    background-color: #162C39;
+    min-height: 100vh;
   }
 </style>

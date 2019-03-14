@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+    <div class="page" :class="theme === 'light' ? 'light' : 'dark'">
       <div class="home">
         <div class="top">
           <div class="activity" v-if="banners && banners.length > 0">
@@ -24,7 +24,7 @@
               <div class="marquee_box">
                 <ul class="marquee_list" :class="{marquee_top:animate}">
                   <li v-for="(item, index) in marqueeList" :key="index">
-                    <a :href="item.link_to" style="color: #47a9ff">
+                    <a :href="item.link_to">
                     <span>{{item.summary}}</span>
                     </a>
                   </li>
@@ -545,6 +545,9 @@
       notices () {
         return this.$store.state.notices;
       },
+      theme () {
+        return this.$store.state.theme;
+      },
       indexNum() {
         let mortgageBtF = parseFloat(this.mortgageBt);
         let eosF = parseFloat(this.indexesData.bonus_pool_eos);
@@ -568,8 +571,6 @@
       }
     },
     created() {
-      // 设置标题
-      // document.title = this.$t('message.btex');
       // 广告和公告
       if (!this.notices) {
         this.getNotice();
@@ -605,7 +606,7 @@
 </script>
 
 <style lang="scss" scoped>
-    .page {
+    .page.dark {
       position: relative;
       overflow: auto;
       .home {
@@ -645,6 +646,7 @@
               padding: 6px 0px;
               padding-right: 6px;
               box-sizing: border-box;
+              display: flex;
               .laba{
                 width: auto;
                 height: 16px;
@@ -671,10 +673,13 @@
             .marquee_list li {
               height: 30px;
               /*line-height: 30px;*/
-              padding: 6px 0px;
+              padding: 5px 0px;
               box-sizing: border-box;
               font-size: 0.875rem;
               /*vertical-align: middle;*/
+            }
+            .marquee_list li a{
+              color: #888888;
             }
             .marquee_list li span {
               padding: 0 2px;
@@ -898,6 +903,329 @@
               .price-cny {
                 font-size: 0.75rem;
                 color: #818181;
+              }
+            }
+            .increase {
+              flex: 1;
+              padding: 7.2px 0px;
+              .increase-value {
+                background: #5AB36D;
+                border-radius: 6px;
+                font-size: 0.875rem;
+                color: #FFFFFF;
+                text-align: center;
+                padding: 4px 0px;
+              }
+            }
+          }
+          .more {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #fff;
+            padding: 10px 0px;
+          }
+        }
+      }
+    }
+    .page.light {
+      position: relative;
+      overflow: auto;
+      .home {
+        position: relative;
+        overflow: auto;
+        padding-bottom: 50px;
+        .top {
+          padding: 15px 0px;
+          background: #ffffff;
+          .activity {
+            margin: 0px;
+            .banner{
+              padding: 0px 15px;
+              box-sizing: border-box;
+              display: block;
+              .img {
+                width: 100%;
+                height: auto;
+                border-radius: 8px;
+              }
+            }
+          }
+          .notice {
+            margin: 0px 15px 0px 15px;
+            .marquee {
+              align-items: center;
+              color: #888888;
+              display: flex;
+              margin: 0 auto;
+              box-sizing: border-box;
+            }
+            .marquee_title {
+              padding-right: 0px;
+              height: 30px;
+              line-height: 30px;
+              align-items: center;
+              padding: 6px 0px;
+              padding-right: 6px;
+              box-sizing: border-box;
+              display: flex;
+              .laba{
+                width: auto;
+                height: 16px;
+                /*vertical-align: middle;*/
+              }
+            }
+            .marquee_box {
+              display: block;
+              position: relative;
+              height: 30px;
+              overflow: hidden;
+              flex: 1;
+            }
+            .marquee_list {
+              display: block;
+              position: absolute;
+              top: 0;
+              left: 0;
+            }
+            .marquee_top {
+              transition: all 0.5s;
+              margin-top: -30px
+            }
+            .marquee_list li {
+              height: 30px;
+              /*line-height: 30px;*/
+              padding: 5px 0px;
+              box-sizing: border-box;
+              font-size: 0.875rem;
+              /*vertical-align: middle;*/
+            }
+            .marquee_list li a{
+              color: #888888;
+            }
+            .marquee_list li span {
+              padding: 0px 30px 0px 2px;
+              overflow: hidden;/*超出部分隐藏*/
+              white-space: nowrap;/*不换行*/
+              text-overflow:ellipsis;/*超出部分文字以...显示*/
+            }
+            .marquee_more:after {
+              content: "...";
+              font-weight: 900;
+              display: inline-block;
+              transform: rotate(90deg);
+              position: relative;
+              right: -10px;
+              color: #888888;
+            }
+          }
+          .userinfo {
+            margin: 15px 15px 0px 15px;
+            .account {
+              display: flex;
+              .name {
+                flex: 1;
+                .key {
+                  font-size: 0.875rem;
+                  color: #9F9F9F;
+                }
+                .value {
+                  font-size: 0.875rem;
+                  padding: 8px 0px;
+                  color: #262626;
+                }
+              }
+              .money {
+                flex: 1;
+                .key {
+                  font-size: 0.875rem;
+                  color: #818181;
+                }
+                .value {
+                  font-size: 0.875rem;
+                  padding: 8px 0px;
+                }
+              }
+            }
+            .cpunet {
+              margin-top: 10px;
+              display: flex;
+              .cpu {
+                flex: 1;
+                padding-right: 50px;
+                .key {
+                  font-size: 0.875rem;
+                  color: #818181;
+                }
+                .value {
+                  padding: 8px 0px;
+                }
+              }
+              .net {
+                flex: 1;
+                padding-right: 50px;
+                .key {
+                  font-size: 0.875rem;
+                  color: #818181;
+                }
+                .value {
+                  padding: 8px 0px;
+                }
+              }
+            }
+          }
+        }
+        .bituex{
+          margin-top: 4px;
+          display: flex;
+          .transfer{
+            background-color: #FFFFFF;
+            padding: 15px;
+            flex: 1;
+            .actions{
+              display: flex;
+              justify-content: space-between;
+              .action-txt{
+                font-size: 16px;
+                color: #262626;
+              }
+              .trans-action{
+                background: #47A9FF;
+                border-radius: 15.5px;
+                font-size: 12px;
+                padding: 0px 10px;
+                line-height: 25px;
+                color: #ffffff;
+              }
+            }
+            .intro{
+              padding-top: 10px;
+              font-size: 12px;
+              color: #9F9F9F;
+            }
+          }
+          .upcoin{
+            background-color: #FFFFFF;
+            margin-left: 4px;
+            padding: 15px 30px;
+            img{
+              width: 25px;
+              height: 25px;
+              display: block;
+              margin: 0 auto;
+            }
+            .upcoin-title{
+              font-size: 12px;
+              text-align: center;
+              padding-top: 10px;
+              color: #262626;
+            }
+          }
+        }
+        .kuai1{
+          margin-top: 4px;
+          display: flex;
+          .usdt{
+            background-color: #ffffff;
+            padding: 15px;
+            flex: 1;
+            .first{
+              .usdt-eos{
+                font-size: 16px;
+                color: #262626;
+              }
+              .chg{
+                font-size: 14px;
+                color: #5AB36D;
+              }
+            }
+            .intro{
+              padding-top: 8px;
+              font-size: 12px;
+              color: #9F9F9F;
+            }
+          }
+          .bouns{
+            background-color: #ffffff;
+            margin-left: 4px;
+            flex: 1;
+            padding: 20px 15px;
+            display: flex;
+            align-items: center;
+            img{
+              width: 25px;
+            }
+            .right{
+              display: inline-block;
+              flex: 1;
+              p{
+                /*padding: 5px 0px 5px 5px;*/
+                /*line-height: 1em;*/
+                padding-left: 10px;
+              }
+              .boun{
+                font-size: 12px;
+                color: #262626;
+              }
+              .rate{
+                font-size: 12px;
+                color: #9F9F9F;
+                padding-top: 10px;
+              }
+            }
+          }
+        }
+        .coins-title{
+          display: flex;
+          font-size: 0.875rem;
+          color: #262626;
+          padding: 10px 15px;
+          border-bottom: 1px solid #F8F8F8;
+          margin-top: 4px;
+          background-color: #FFFFFF;
+          .txt{
+            flex: 1;
+          }
+          .txt:nth-child(2){
+            text-align: right;
+          }
+        }
+        .coins {
+          padding: 15px;
+          background-color: #FFFFFF;
+          .coin {
+            margin-bottom: 15px;
+            display: flex;
+            .pair {
+              flex: 2;
+              position: relative;
+              padding-left: 40px;
+              .logo{
+                width: 32px;
+                position: absolute;
+                left: 0px;
+                top: 3px;
+                border-radius: 16px;
+                background: #fff;
+              }
+              .coin-name {
+                font-size: 1rem;
+                color: #262626;
+              }
+              .volume {
+                font-size: 0.75rem;
+                color: #9F9F9F;
+              }
+            }
+            .price {
+              flex: 1;
+              padding-top: 2px;
+              .price-eos {
+                font-size: 0.875rem;
+                color: #14BC63;
+              }
+              .price-cny {
+                font-size: 0.75rem;
+                color: #9F9F9F;
               }
             }
             .increase {

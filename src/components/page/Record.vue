@@ -1,6 +1,6 @@
 <template>
-  <div id='master'>
-    <div class='page'>
+  <div id='master' :class="theme === 'light' ? 'light' : 'dark'">
+    <div class='page' >
       <div class="filter">
         <div class="coins" @click="showCoinAction">{{sysName}}/{{baseSysName}}&nbsp;&nbsp;<i class="fa fa-angle-down"></i></div>
         <div class="actions">
@@ -129,6 +129,9 @@
         },
         basetokens: function () {
           return this.$store.state.basetokens;
+        },
+        theme () {
+          return this.$store.state.theme;
         }
       },
       methods: {
@@ -345,121 +348,247 @@
 </script>
 
 <style lang='scss' scoped>
-  .page {
-    padding: 10px;
-    padding-top: 50px;
-    .filter{
-      display: flex;
-      position: fixed;
-      top: 0px;
-      width: 100%;
-      left: 0px;
+  .dark{
+    background-color: #1F3547;
+    min-height: 100vh;
+    box-sizing: border-box;
+    .page {
       padding: 10px;
-      box-sizing: border-box;
-      z-index: 100;
-      background: #162c39;
-      .coins{
-        flex: 1;
-        font-size: 1rem;
-        color: #FFFFFF;
-      }
-      .actions{
-        flex: 1;
-        .action{
-          border: 1px solid #5A81A3;
-          border-radius: 3px;
-          font-size: 0.75rem;
-          color: #5A81A3;
-          text-align: center;
-          margin-left: 10px;
-          max-width: 40px;
-          padding: 2px 10px;
-          float: right;
-        }
-        .active{
-          background: #5A81A3;
+      padding-top: 50px;
+      .filter{
+        display: flex;
+        position: fixed;
+        top: 0px;
+        width: 100%;
+        left: 0px;
+        padding: 10px;
+        box-sizing: border-box;
+        z-index: 100;
+        background: #1F3547;
+        .coins{
+          flex: 1;
+          font-size: 1rem;
           color: #FFFFFF;
         }
+        .actions{
+          flex: 1;
+          .action{
+            border: 1px solid #5A81A3;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            color: #5A81A3;
+            text-align: center;
+            margin-left: 10px;
+            max-width: 40px;
+            padding: 2px 10px;
+            float: right;
+          }
+          .active{
+            background: #5A81A3;
+            color: #FFFFFF;
+          }
+        }
       }
-    }
-    .user-order{
-      background: #2D4E69;
-      border-radius: 3px;
-      padding: 10px;
-      position: relative;
-      margin-bottom: 10px;
-      .o-top{
-        .o-type{
-          font-size: 0.875rem;
-          padding-right: 10px;
+      .user-order{
+        background: #2D4E69;
+        border-radius: 3px;
+        padding: 10px;
+        position: relative;
+        margin-bottom: 10px;
+        .o-top{
+          .o-type{
+            font-size: 0.875rem;
+            padding-right: 10px;
+          }
+          .o-type.buy{
+            color: #14BC63;
+          }
+          .o-type.sell{
+            color: #F87070;
+          }
+          .o-time{
+            font-size: 0.75rem;
+            color: #fff;
+          }
         }
-        .o-type.buy{
-          color: #14BC63;
+        .o-bottom{
+          display: flex;
+          .o-info{
+            padding-top: 10px;
+            flex: 1;
+            .info-name{
+              font-size: 0.75rem;
+              color: #5A81A3;
+            }
+            .info-value{
+              font-size: 0.75rem;
+              color: #FFFFFF;
+            }
+          }
+          .o-info2{
+            padding-top: 10px;
+            flex: 2;
+            width: 0;
+            .info-name{
+              font-size: 0.75rem;
+              color: #5A81A3;
+            }
+            .info-value{
+              font-size: 0.75rem;
+              color: #FFFFFF;
+              a{
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                width: 100%;
+                display: block;
+              }
+            }
+          }
+          .o-info:nth-child(1){
+            flex: 1.2;
+          }
         }
-        .o-type.sell{
-          color: #F87070;
-        }
-        .o-time{
+        .o-action{
+          position: absolute;
+          top: 10px;
+          right: 10px;
           font-size: 0.75rem;
+          color: #47A9FF;
+          padding: 6px 10px;
+          cursor: pointer;
+          border: 1px solid #47A9FF;
+          border-radius: 4px;
+        }
+      }
+      .user-order-none{
+        p{
+          padding: 10px;
+          text-align: center;
+          font-size: 0.875rem;
           color: #fff;
         }
       }
-      .o-bottom{
+    }
+  }
+  .light {
+    background-color: #f8f8f8;
+    .page {
+      padding: 10px;
+      padding-top: 50px;
+      .filter{
         display: flex;
-        .o-info{
-          padding-top: 10px;
+        position: fixed;
+        top: 0px;
+        width: 100%;
+        left: 0px;
+        padding: 10px;
+        box-sizing: border-box;
+        z-index: 100;
+        background-color: #f8f8f8;
+        .coins{
           flex: 1;
-          .info-name{
+          font-size: 1rem;
+          color: #262626;
+        }
+        .actions{
+          flex: 1;
+          .action{
+            border: 1px solid #5A81A3;
+            border-radius: 3px;
             font-size: 0.75rem;
             color: #5A81A3;
+            text-align: center;
+            margin-left: 10px;
+            max-width: 40px;
+            padding: 2px 10px;
+            float: right;
           }
-          .info-value{
-            font-size: 0.75rem;
+          .active{
+            background: #5A81A3;
             color: #FFFFFF;
           }
         }
-        .o-info2{
-          padding-top: 10px;
-          flex: 2;
-          width: 0;
-          .info-name{
-            font-size: 0.75rem;
-            color: #5A81A3;
+      }
+      .user-order{
+        background: #ffffff;
+        border-radius: 3px;
+        padding: 10px;
+        position: relative;
+        margin-bottom: 10px;
+        .o-top{
+          .o-type{
+            font-size: 0.875rem;
+            padding-right: 10px;
           }
-          .info-value{
+          .o-type.buy{
+            color: #14BC63;
+          }
+          .o-type.sell{
+            color: #F87070;
+          }
+          .o-time{
             font-size: 0.75rem;
-            color: #FFFFFF;
-            a{
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              width: 100%;
-              display: block;
+            color: #262626;
+          }
+        }
+        .o-bottom{
+          display: flex;
+          .o-info{
+            padding-top: 10px;
+            flex: 1;
+            .info-name{
+              font-size: 0.75rem;
+              color: #9F9F9F;
+            }
+            .info-value{
+              font-size: 0.75rem;
+              color: #262626;
             }
           }
+          .o-info2{
+            padding-top: 10px;
+            flex: 2;
+            width: 0;
+            .info-name{
+              font-size: 0.75rem;
+              color: #9F9F9F;
+            }
+            .info-value{
+              font-size: 0.75rem;
+              color: #262626;
+              a{
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                width: 100%;
+                display: block;
+              }
+            }
+          }
+          .o-info:nth-child(1){
+            flex: 1.2;
+          }
         }
-        .o-info:nth-child(1){
-          flex: 1.2;
+        .o-action{
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          font-size: 0.75rem;
+          color: #47A9FF;
+          padding: 6px 10px;
+          cursor: pointer;
+          border: 1px solid #47A9FF;
+          border-radius: 4px;
         }
       }
-      .o-action{
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 0.75rem;
-        color: #47A9FF;
-        padding: 6px 10px;
-        cursor: pointer;
-        border: 1px solid #47A9FF;
-        border-radius: 4px;
-      }
-    }
-    .user-order-none{
-      p{
-        padding: 10px;
-        text-align: center;
-        font-size: 0.875rem;
-        color: #fff;
+      .user-order-none{
+        p{
+          padding: 10px;
+          text-align: center;
+          font-size: 0.875rem;
+          color: #262626;
+        }
       }
     }
   }
