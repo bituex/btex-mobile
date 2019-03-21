@@ -65,12 +65,15 @@
       let overrides = {
         // 'paneProperties.background': '#1F3548',
         // 'symbolWatermarkProperties.color': '#1F3548',
+        'volumePaneSize': 'small',
+        'scalesProperties.lineColor': '#f8f8f8',
         'paneProperties.legendProperties.showLegend': false
       };
       if (that.theme === 'dark') {
         overrides = {
           'paneProperties.background': '#1F3548',
           'symbolWatermarkProperties.color': '#1F3548',
+          'volumePaneSize': 'small',
           'paneProperties.legendProperties.showLegend': false
         };
       }
@@ -91,18 +94,15 @@
         symbol: symbol,
         interval: interval,
         container_id: 'tv_chart_container',
-        // BEWARE: no trailing slash is expected in feed URL
         datafeed: new Datafeeds.UDFCompatibleDatafeed(url),
         library_path: '/btex_website/static/charting_library/',
         // library_path: '/static/charting_library/',
         locale: lang,
-        // disabled_features: ['use_localstorage_for_settings', 'header_fullscreen_button', 'header_resolutions', 'control_bar', 'header_widget_dom_node', 'legend_context_menu', 'context_menus', 'header_screenshot', 'header_settings', 'header_symbol_search', 'header_chart_type', 'header_indicators', 'header_compare', 'header_undo_redo', 'header_saveload', 'volume_force_overlay'],
-        // enabled_features: ['move_logo_to_main_pane'],
-        disabled_features: ['use_localstorage_for_settings', 'control_bar', 'header_widget_dom_node', 'header_resolutions', 'legend_context_menu', 'format_button_in_legend', 'context_menus', 'header_screenshot', 'header_settings', 'header_symbol_search', 'header_chart_type', 'header_indicators', 'header_compare', 'header_undo_redo', 'header_saveload', 'volume_force_overlay', 'control_bar', 'timeframes_toolbar', 'header_fullscreen_button'],
-        enabled_features: ['move_logo_to_main_pane'],
+        disabled_features: ['use_localstorage_for_settings', 'control_bar', 'header_widget_dom_node', 'header_resolutions', 'legend_context_menu', 'format_button_in_legend', 'context_menus', 'header_screenshot', 'header_settings', 'header_symbol_search', 'header_chart_type', 'header_indicators', 'header_compare', 'header_undo_redo', 'header_saveload', 'volume_force_overlay', 'timeframes_toolbar', 'header_fullscreen_button', 'property_pages', 'show_chart_property_page', 'chart_zoom'],
+        enabled_features: ['move_logo_to_main_pane', 'seconds_resolution', 'show_chart_property_page', 'symbol_info'],
         overrides: overrides,
         custom_css_url: '/btex_website/static/css/chart.v6.css'
-        // custom_css_url: '/static/css/chart.v5.css'
+        // custom_css_url: '/static/css/chart.v6.css'
       });
       that.tvWidget.onChartReady(() => {
         var renderMa = [

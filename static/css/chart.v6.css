@@ -20,6 +20,13 @@ html.theme-dark .customButton--jqJTfH5-{
 html.theme-dark .customButton--jqJTfH5-.active{
   color: #B3DCFF !important;
 }
+html.theme-light .customButton--jqJTfH5-{
+  font-size: 12px !important;
+  color: #959292 !important;
+}
+html.theme-light .customButton--jqJTfH5-.active{
+  color: #000000 !important;
+}
 html.theme-dark .fadeRight-36gcjOQb-{
   background: transparent !important;
 }
@@ -82,4 +89,7 @@ html.theme-dark .button-2ioYhFEY-.isInteractive-20uLObIc-.isOpened-p-Ume5l9- {
 }
 html.theme-light .chart-page{
   background-color: #ffffff;
+}
+html.theme-light .chart-page .chart-container{
+  border: none;
 }

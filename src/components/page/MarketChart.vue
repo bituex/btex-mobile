@@ -1187,6 +1187,7 @@
               width: 100%;
               height: 380px;
               background-color: #ffffff;
+              border-top: 1px solid #F8F8F8;
               iframe{
                 width: 100%;
                 height: 320px;

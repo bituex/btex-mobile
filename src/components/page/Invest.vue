@@ -772,7 +772,7 @@
           font-size: 12px;
           color: #ffffff;;
           text-align: center;
-          padding: 5px 0px;
+          /*padding: 5px 0px;*/
         }
         .index-text{
           opacity: 0.5;
@@ -827,7 +827,7 @@
                 color: #5A81A3;
               }
               .info-value {
-                font-size: 12px;
+                font-size: 14px;
                 color: #ffffff;
               }
             }
@@ -1001,7 +1001,7 @@
           font-size: 12px;
           color: #ffffff;;
           text-align: center;
-          padding: 5px 0px;
+          /*padding: 5px 0px;*/
         }
         .index-text{
           opacity: 0.5;
@@ -1053,10 +1053,10 @@
               .info-name {
                 line-height: 3em;
                 font-size: 12px;
-                color: #5A81A3;
+                color: #9F9F9F;
               }
               .info-value {
-                font-size: 12px;
+                font-size: 14px;
                 color: #262626;
               }
             }

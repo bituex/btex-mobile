@@ -1738,7 +1738,7 @@
             background: #1F3548;
             min-height: 300px;
             .order-trade {
-              font-size: 0.75rem;
+              font-size: 0.8rem;
               height: calc(100% - 0px);
               .order-tab{
                 .tabs{
@@ -1752,7 +1752,7 @@
                     line-height: 40px;
                     display: inline-block;
                     list-style: none;
-                    font-size: 0.75rem;
+                    font-size: 0.8rem;
                     font-weight: 500;
                     color: #fff;
                     opacity: .5;
@@ -1897,6 +1897,7 @@
               top: 0px;
               z-index: 100;
               max-width: 768px;
+              border-bottom: 1px solid #f8f8f8;
               .coin-one{
                 color: #1E1E1E;
                 margin-right: 0px;
@@ -2082,7 +2083,7 @@
                       line-height: 28px;
                       text-align: right;
                       padding: 0px;
-                      color: #b8b8b8;
+                      color: #000000;
                       span{
                         width: 50%;
                         float: left;
@@ -2188,7 +2189,7 @@
             background: #ffffff;
             min-height: 300px;
             .order-trade {
-              font-size: 0.75rem;
+              font-size: 0.8rem;
               height: calc(100% - 0px);
               .order-tab{
                 .tabs{
@@ -2202,7 +2203,7 @@
                     line-height: 40px;
                     display: inline-block;
                     list-style: none;
-                    font-size: 0.75rem;
+                    font-size: 0.8rem;
                     font-weight: 500;
                     color: #181818;
                     opacity: .5;

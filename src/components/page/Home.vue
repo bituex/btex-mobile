@@ -705,7 +705,7 @@
                   color: #818181;
                 }
                 .value {
-                  font-size: 0.875rem;
+                  font-size: 1rem;
                   color: #FFFFFF;
                   padding: 8px 0px;
                 }
@@ -717,7 +717,7 @@
                   color: #818181;
                 }
                 .value {
-                  font-size: 0.875rem;
+                  font-size: 1rem;
                   color: #FFFFFF;
                   padding: 8px 0px;
                 }
@@ -816,7 +816,7 @@
               }
             }
             .intro{
-              padding-top: 8px;
+              padding-top: 6px;
               font-size: 12px;
               color: #5A81A3;
             }
@@ -846,7 +846,7 @@
               .rate{
                 font-size: 12px;
                 color: #5A81A3;
-                padding-top: 10px;
+                padding-top: 8px;
               }
             }
           }
@@ -1029,7 +1029,7 @@
                   color: #9F9F9F;
                 }
                 .value {
-                  font-size: 0.875rem;
+                  font-size: 1rem;
                   padding: 8px 0px;
                   color: #262626;
                 }
@@ -1041,7 +1041,7 @@
                   color: #818181;
                 }
                 .value {
-                  font-size: 0.875rem;
+                  font-size: 1rem;
                   padding: 8px 0px;
                 }
               }
@@ -1139,7 +1139,7 @@
               }
             }
             .intro{
-              padding-top: 8px;
+              padding-top: 6px;
               font-size: 12px;
               color: #9F9F9F;
             }
@@ -1169,7 +1169,7 @@
               .rate{
                 font-size: 12px;
                 color: #9F9F9F;
-                padding-top: 10px;
+                padding-top: 8px;
               }
             }
           }

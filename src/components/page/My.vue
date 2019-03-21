@@ -402,7 +402,7 @@
       box-sizing: border-box;
       z-index: 999;
       .account-name {
-        font-size: 0.875rem;
+        font-size: 1rem;
         color: #FFFFFF;
         flex: 1;
       }
@@ -545,7 +545,7 @@
       box-sizing: border-box;
       z-index: 999;
       .account-name {
-        font-size: 0.875rem;
+        font-size: 1rem;
         color: #262626;
         flex: 1;
       }
