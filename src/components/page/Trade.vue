@@ -829,8 +829,9 @@
                   qtys: g.sum('$.qty'),
                   qty_totals: g.sum('$.qty_total')
                 };
-              })
-            .toArray();
+              }).where(function(x) {
+                return x.qtys >= 0.0001;
+            }).toArray();
           // 排序
           buys.sort(function (x, y) {
             return y.price - x.price;
@@ -1897,7 +1898,7 @@
               top: 0px;
               z-index: 100;
               max-width: 768px;
-              border-bottom: 1px solid #f8f8f8;
+              border-bottom: 1px solid #E8E8E8;
               .coin-one{
                 color: #1E1E1E;
                 margin-right: 0px;

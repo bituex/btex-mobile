@@ -87,7 +87,8 @@ export default {
   },
   formatNnum: function(num) {
     if (num < 10000) {
-      return num.toFixed(4);
+      let numpow = Math.pow(10, 4);
+      return Math.floor(num * numpow) / numpow;
     } else {
       return parseFloat(num / 1000).toFixed(2) + ' k';
     }

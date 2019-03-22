@@ -101,7 +101,7 @@
         disabled_features: ['use_localstorage_for_settings', 'control_bar', 'header_widget_dom_node', 'header_resolutions', 'legend_context_menu', 'format_button_in_legend', 'context_menus', 'header_screenshot', 'header_settings', 'header_symbol_search', 'header_chart_type', 'header_indicators', 'header_compare', 'header_undo_redo', 'header_saveload', 'volume_force_overlay', 'timeframes_toolbar', 'header_fullscreen_button', 'property_pages', 'show_chart_property_page', 'chart_zoom'],
         enabled_features: ['move_logo_to_main_pane', 'seconds_resolution', 'show_chart_property_page', 'symbol_info'],
         overrides: overrides,
-        custom_css_url: '/btex_website/static/css/chart.v6.css'
+        custom_css_url: '/btex_website/static/css/chart.v7.css'
         // custom_css_url: '/static/css/chart.v6.css'
       });
       that.tvWidget.onChartReady(() => {
