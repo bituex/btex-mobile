@@ -173,7 +173,6 @@
         });
         var p2 = new Promise(function (resolve, reject) {
           that.selfUtil.apiAxios('POST', that.selfUtil.host + '/service/api/currencies', {'params': {}}, res => {
-            // console.log(res);
             if (res.result.error === 0) {
               // 获取成功， 拼接，链上数据
               resolve(res.result.records);

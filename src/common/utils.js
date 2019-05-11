@@ -32,7 +32,6 @@ export default {
       .catch(function (err) {
         if (err.message) {
           // alert(err.message);
-          console.log(err.message);
         }
       });
   },

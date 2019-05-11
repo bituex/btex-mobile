@@ -37,7 +37,8 @@
           <label for="intro">{{$t("message.intro")}}</label>
           <textarea id="intro" class="form-control" v-model="joinCoin.coinInfo" rows="3" :placeholder="$t('message.input_intro')"></textarea>
         </div>
-        <button type="submit" @click="onSubmit" class="weui-btn weui-btn_default yellow" style="margin-top: 36px">{{$t("message.up_coin")}}</button>
+        <p style="margin-top: 36px;margin-bottom:10px;font-size: 12px;color: #9F9F9F;">请确保账户{{account.name}}有2000 BT, 当前有{{userAccountInfo.bt}} BT.</p>
+        <button type="submit" @click="onSubmit" class="weui-btn weui-btn_default yellow">{{$t("message.up_coin")}}</button>
       </div>
     </div>
   </div>
@@ -79,7 +80,6 @@
     watch: {
       identity: function (newIdentity) {
         if (newIdentity) {
-          // console.log(newIdentity);
           let account = newIdentity.accounts.find(x => x.blockchain === 'eos');
           this.account = account;
           // 获取EOS数量
@@ -135,12 +135,6 @@
                     that.joinCoinForm(currencyId, amount);
                   } else {
                     if (typeof (err) === 'string') {
-                      // this.weui.alert(this.$t('message.alert_up_coin_error') + err, {
-                      //   buttons: [{
-                      //     label: that.$t('message.confirm'),
-                      //     type: 'primary'
-                      //   }]
-                      // });
                       err = JSON.parse(err);
                       if (err.code === 500) {
                         var errMsg = '';
@@ -154,12 +148,6 @@
                         });
                       }
                     } else {
-                      // this.weui.alert(this.$t('message.alert_up_coin_error') + err.message, {
-                      //   buttons: [{
-                      //     label: that.$t('message.confirm'),
-                      //     type: 'primary'
-                      //   }]
-                      // });
                       this.$message({
                         type: 'error',
                         text: this.$t('message.alert_up_coin_error') + err.message,
@@ -170,12 +158,6 @@
                 }
               );
             } else {
-              // this.weui.alert(this.$t('message.alert_no_scatter'), {
-              //   buttons: [{
-              //     label: that.$t('message.confirm'),
-              //     type: 'primary'
-              //   }]
-              // });
               this.$message({
                 type: 'error',
                 text: this.$t('message.alert_no_scatter'),
@@ -183,12 +165,6 @@
               });
             }
           } else {
-            // this.weui.alert(this.$t('message.alert_please_log_in_first'), {
-            //   buttons: [{
-            //     label: that.$t('message.confirm'),
-            //     type: 'primary'
-            //   }]
-            // });
             this.$message({
               type: 'error',
               text: this.$t('message.alert_please_log_in_first'),
@@ -196,12 +172,6 @@
             });
           }
         } else {
-          // this.weui.alert(this.$t('message.alert_coin_name_notnull'), {
-          //   buttons: [{
-          //     label: that.$t('message.confirm'),
-          //     type: 'primary'
-          //   }]
-          // });
           this.$message({
             type: 'error',
             text: this.$t('message.alert_coin_name_notnull'),
@@ -225,7 +195,6 @@
         // console.log(params);
         // 发送
         this.selfUtil.apiAxios('POST', this.selfUtil.host + '/service/api/currency/create', {'params': data}, res => {
-          // console.log(res);
           if (res.result.error === 0) {
             // that.weui.alert(that.$t('message.alert_up_coin_success'), {
             //   buttons: [{
@@ -244,7 +213,6 @@
       },
       // 上传图像
       uploadPicAction(event) {
-        console.log(event);
         var file = event.target.files[0];
         var that = this;
         // 创建读取文件的对象
@@ -254,7 +222,6 @@
         reader.onload = function (e) {
           imgFile = e.target.result;
           that.joinCoin.imageUrl = imgFile;
-          // console.log(that.joinCoin.imageUrl);
         };
         // 正式读取文件
         reader.readAsDataURL(file);

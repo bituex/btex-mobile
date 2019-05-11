@@ -77,7 +77,6 @@
       watch: {
         identity: function (newIdentity) {
           if (newIdentity) {
-            // console.log(newIdentity);
             let account = newIdentity.accounts.find(x => x.blockchain === 'eos');
             this.account = account;
             // 获取账号详情
@@ -283,7 +282,6 @@
           var that = this;
           let accountName = this.account.name;
           that.selfUtil.apiAxios('POST', that.selfUtil.host + '/service/api/currency/favorites', {'params': {account_name: accountName}}, res => {
-            // console.log(res);
             if (res.result.error === 0) {
               // 获取成功， 拼接，链上数据
               that.coinSelf = res.result.records;

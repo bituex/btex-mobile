@@ -37,16 +37,22 @@
                   </div>
                   <div class="ad-create-box">
                     <div class="input-container">
+                      <ui-select :selects-data="[{text: '限价', value: 0}, {text: '市价', value: 1}]" @on-select-change="changeTradeType" ></ui-select>
+                    </div>
+                    <div class="input-container" v-show="tradeType == 1">
+                      <div class="marketPrice">以当前最优价格交易</div>
+                    </div>
+                    <div class="input-container" v-show="tradeType == 0">
                       <el-input-number size="small" v-model="orderPrice" :precision="6" :step="0.000001"></el-input-number>
                     </div>
                     <div class="input-container" >
                       <el-input size="small" v-model="orderQuantity" @focus="quantityChange" :placeholder="$t('message.quantity')">
-                        <template slot="append">{{currencyNow.asset_symbol}}</template>
+                        <template slot="append">{{(tradeType == 1 && createType == 'buy') ? baseToken.sym_name : currencyNow.asset_symbol}}</template>
                       </el-input>
                     </div>
                     <div class="trade-price">
-                      <p>{{$t("message.trade_amount")}}&nbsp;{{orderAmount}}&nbsp;{{baseToken.sym_name}}</p>
-                      <p>{{$t("message.feel_amount")}}&nbsp;{{feelAmount}}&nbsp;{{baseToken.sym_name}}<span v-if="baseToken.sym_name=='EOS'">({{$t("message.mining")}}&nbsp;{{mining}}BT)</span></p>
+                      <p v-if="!(tradeType == 1 && createType == 'sell')">{{$t("message.trade_amount")}}&nbsp;{{orderAmount}}&nbsp;{{baseToken.sym_name}}</p>
+                      <p v-if="tradeType == 0">{{$t("message.feel_amount")}}&nbsp;{{feelAmount}}&nbsp;{{baseToken.sym_name}}<span v-if="baseToken.sym_name=='EOS'">({{$t("message.mining")}}&nbsp;{{mining}}BT)</span></p>
                     </div>
                     <div class="quik-num-btns">
                       <span @click="quickQuantity(1)" :class="{active: this.quickQuantityType==1}">25%</span>
@@ -79,19 +85,19 @@
                     </ul>
                     <div class="scroll-box">
                       <ul class="sell-list">
-                        <li v-for="(sell, index) in sells" :key="index" @click="quickOrderPrice(sell.price)">
+                        <li v-for="(sell, index) in sells" :key="index" @click="quickOrderPrice(sell.price, sell.qtys)">
                           <span class="red">{{sell.price}}</span>
                           <span>{{sell.qtys_f}}</span>
                           <i class="ambg ambg1" :style="'width:' + getAmbgWidth(sell.qtys, 'sell')"></i>
                         </li>
                       </ul>
-                      <div class="ticker" @click="quickOrderPrice(currencyNow.newPrice)">
+                      <div class="ticker" @click="quickOrderPrice(currencyNow.newPrice, 0)">
                         <!--v-bind:class="{ 'down': currencyNow.change>0, 'up': currencyNow.change<=0 }"-->
                         <span>{{currencyNow.newPrice}}</span>
                         <span>≈¥{{computedPrice(currencyNow.newPrice)}}</span>
                       </div>
                       <ul class="buy-list">
-                        <li v-for="(buy, index) in buys" :key="index" @click="quickOrderPrice(buy.price)">
+                        <li v-for="(buy, index) in buys" :key="index" @click="quickOrderPrice(buy.price, buy.qtys)">
                           <span class="green">{{buy.price}}</span>
                           <span>{{buy.qtys_f}}</span>
                           <i class="ambg" :style="'width:' + getAmbgWidth(buy.qtys, 'buy')"></i>
@@ -216,6 +222,7 @@
   import Enumerable from 'linq';
   import ElInput from '../element/input';
   import ElInputNumber from '../element/input-number';
+  import UiSelect from '../component/Select';
   export default {
     name: 'Trade',
     data() {
@@ -223,6 +230,7 @@
         showCoin: false,
         activeAdName: 'first',
         createType: 'buy',
+        tradeType: 0,
         quickQuantityType: 0,
         orderPrice: 0,
         orderQuantity: '',
@@ -359,7 +367,7 @@
       }
     },
     components: {
-      CoinMenu, ElInput, ElInputNumber
+      CoinMenu, ElInput, ElInputNumber, UiSelect
     },
     watch: {
       currencyNow: function (newVal) {
@@ -405,6 +413,16 @@
       }
     },
     methods: {
+      changeTradeType(value) {
+        this.tradeType = value;
+        if (this.tradeType === 0) {
+          this.orderPrice = this.currencyNow.newPrice;
+        } else {
+          this.orderPrice = 1;
+        }
+        this.orderQuantity = '';
+        this.quickQuantityType = 0;
+      },
       getAmbgWidth(num, type) {
         if (type === 'buy') {
           if (this.orderMaxBuyQty === 0) {
@@ -460,30 +478,44 @@
       },
       // 买卖类型切换
       buyClick() {
-        if (this.createType === 'sell') {
-          this.createType = 'buy';
-          this.orderQuantity = '';
-          this.quickQuantityType = 0;
-          if (this.sells.length > 0) {
-            this.orderPrice = parseFloat(this.sells[this.sells.length - 1].price);
-          } else {
-            this.orderPrice = 0;
+        if (this.tradeType === 0) {
+          if (this.createType === 'sell') {
+            this.createType = 'buy';
+            this.orderQuantity = '';
+            this.quickQuantityType = 0;
+            if (this.sells.length > 0) {
+              this.orderPrice = parseFloat(this.sells[this.sells.length - 1].price);
+            } else {
+              this.orderPrice = this.currencyNow.newPrice;
+            }
+          }
+        } else if (this.tradeType === 1) {
+          if (this.createType === 'sell') {
+            this.createType = 'buy';
+            this.orderQuantity = '';
+            this.quickQuantityType = 0;
           }
         }
       },
       // 买卖类型切换
       sellClick() {
-        if (this.createType === 'buy') {
-          this.createType = 'sell';
-          this.orderQuantity = '';
-          this.quickQuantityType = 0;
-          if (this.buys.length > 0) {
-            this.orderPrice = parseFloat(this.buys[0].price);
-          } else {
-            this.orderPrice = 0;
+        if (this.tradeType === 0) {
+          if (this.createType === 'buy') {
+            this.createType = 'sell';
+            this.orderQuantity = '';
+            this.quickQuantityType = 0;
+            if (this.buys.length > 0) {
+              this.orderPrice = parseFloat(this.buys[0].price);
+            } else {
+              this.orderPrice = this.currencyNow.newPrice;
+            }
           }
-        } else {
-          // console.log('已经是sell');
+        } else if (this.tradeType === 1) {
+          if (this.createType === 'buy') {
+            this.createType = 'sell';
+            this.orderQuantity = '';
+            this.quickQuantityType = 0;
+          }
         }
       },
       // 手动输入数量 置空
@@ -510,22 +542,37 @@
           if (this.userAccountInfo.eos === 0 || parseFloat(this.orderPrice) === 0) {
             this.orderQuantity = 0;
           } else {
-            if (num === 1) {
-              this.orderQuantity = parseFloat((this.userAccountInfo.eos / parseFloat(this.orderPrice) * 0.999) * 0.25).toFixed(precision);
-            } else if (num === 2) {
-              this.orderQuantity = parseFloat((this.userAccountInfo.eos / parseFloat(this.orderPrice) * 0.999) * 0.5).toFixed(precision);
-            } else if (num === 3) {
-              this.orderQuantity = parseFloat((this.userAccountInfo.eos / parseFloat(this.orderPrice) * 0.999) * 0.75).toFixed(precision);
-            } else if (num === 4) {
-              let amount = parseFloat(this.userAccountInfo.eos / parseFloat(this.orderPrice) * 0.999);
-              let pamvar = 1;
-              for (let i = 0; i < precision; i++) {
-                pamvar = pamvar * 10;
+            if (this.tradeType === 0) {
+              if (num === 1) {
+                this.orderQuantity = parseFloat((this.userAccountInfo.eos / parseFloat(this.orderPrice)) * 0.25).toFixed(precision);
+              } else if (num === 2) {
+                this.orderQuantity = parseFloat((this.userAccountInfo.eos / parseFloat(this.orderPrice)) * 0.5).toFixed(precision);
+              } else if (num === 3) {
+                this.orderQuantity = parseFloat((this.userAccountInfo.eos / parseFloat(this.orderPrice)) * 0.75).toFixed(precision);
+              } else if (num === 4) {
+                let amount = parseFloat(this.userAccountInfo.eos / parseFloat(this.orderPrice));
+                let pamvar = 1;
+                for (let i = 0; i < precision; i++) {
+                  pamvar = pamvar * 10;
+                }
+                amount = parseInt(parseFloat(amount * pamvar).toFixed(0)) / pamvar;
+                this.orderQuantity = amount;
+              } else {
+                this.orderQuantity = 0;
               }
-              amount = parseInt(parseFloat(amount * pamvar).toFixed(0)) / pamvar;
-              this.orderQuantity = amount;
-            } else {
-              this.orderQuantity = 0;
+            } else if (this.tradeType === 1) {
+              if (num === 1) {
+                this.orderQuantity = parseFloat(this.userAccountInfo.eos * 0.25).toFixed(precision);
+              } else if (num === 2) {
+                this.orderQuantity = parseFloat(this.userAccountInfo.eos * 0.5).toFixed(precision);
+              } else if (num === 3) {
+                this.orderQuantity = parseFloat(this.userAccountInfo.eos * 0.75).toFixed(precision);
+              } else if (num === 4) {
+                let amount = parseFloat(this.userAccountInfo.eos);
+                this.orderQuantity = amount;
+              } else {
+                this.orderQuantity = 0;
+              }
             }
           }
         } else {
@@ -607,8 +654,9 @@
         }
       },
       // 点击修改价格
-      quickOrderPrice(price) {
+      quickOrderPrice(price, quantity) {
         this.orderPrice = parseFloat(price).toFixed(6);
+        this.orderQuantity = quantity;
       },
       // 撤单动作
       cancelOrderAction(orderId, orderType, currencyId) {
@@ -787,11 +835,12 @@
             return y.price - x.price;
           });
           let sellShows = [];
-          let sellCount = sells.length > 5 ? 5 : sells.length;
+          let sellCount = sells.length > 6 ? 6 : sells.length;
           for (let j = sells.length - 1; j >= (sells.length - sellCount); j--) {
+            let numpow = Math.pow(10, 4);
             let sell = {
               price: sells[j].price.toFixed(6),
-              qtys: sells[j].qtys,
+              qtys: Math.floor(sells[j].qtys * numpow) / numpow,
               qtys_f: that.selfUtil.formatNnum(sells[j].qtys),
               qty_totals: sells[j].qty_totals.toFixed(4)
             };
@@ -837,11 +886,12 @@
             return y.price - x.price;
           });
           let buyShows = [];
-          let butCount = buys.length > 5 ? 5 : buys.length;
+          let butCount = buys.length > 6 ? 6 : buys.length;
           for (let j = 0; j < butCount; j++) {
+            let numpow = Math.pow(10, 4);
             let buy = {
               price: buys[j].price.toFixed(6),
-              qtys: buys[j].qtys,
+              qtys: Math.floor(buys[j].qtys * numpow) / numpow,
               qtys_f: that.selfUtil.formatNnum(buys[j].qtys),
               qty_totals: buys[j].qty_totals.toFixed(4)
             };
@@ -907,73 +957,133 @@
       createOrder() {
         let that = this;
         if (this.account) {
-          if (this.orderQuantity > 0 && parseFloat(this.orderPrice) > 0) {
-            var memo = 'order:';
-            if (this.createType === 'buy') {
-              // 买入挂单
-              let orderPrice = parseFloat(that.orderPrice).toFixed(6);
-              let amount = parseFloat(that.orderAmount + that.feelAmount).toFixed(4);
-              let orderId = new Date().getTime() + Math.random().toString().substr(3, 5);
-              memo = memo + '1,';
-              memo = memo + orderId + ',';
-              memo = memo + that.currencyId + ',';
-              memo = memo + parseFloat(orderPrice * 1000000).toFixed(0) + ',';
-              memo = memo + '6';
-              if (amount < 0.1) {
-                this.$message({
-                  type: 'error',
-                  text: this.$t('message.alert_less_than_zero_point_one'),
-                  duration: 3000
-                });
-              } else if (amount > that.userAccountInfo.eos) {
-                this.$message({
-                  type: 'error',
-                  text: this.$t('message.alert_no_money'),
-                  duration: 3000
-                });
+          if (this.tradeType === 1) {
+            // 市价交易
+            if (this.orderQuantity > 0) {
+              let memo = 'order:';
+              if (this.createType === 'buy') {
+                // 买入挂单
+                // let orderPrice = parseFloat(that.orderPrice).toFixed(6);
+                let amount = parseFloat(that.orderAmount).toFixed(4);
+                let orderId = new Date().getTime() + Math.random().toString().substr(3, 5);
+                memo = memo + '3,';
+                memo = memo + orderId + ',';
+                memo = memo + that.currencyId;
+                if (amount < 0.01) {
+                  this.$message({
+                    type: 'error',
+                    text: this.$t('message.alert_less_than_zero_point_one'),
+                    duration: 3000
+                  });
+                } else if (amount > that.userAccountInfo.eos) {
+                  this.$message({
+                    type: 'error',
+                    text: this.$t('message.alert_no_money'),
+                    duration: 3000
+                  });
+                } else {
+                  that.buyOrder('btexexchange', amount, memo);
+                }
+              } else if (this.createType === 'sell') {
+                // 卖出挂单
+                let orderId = new Date().getTime() + Math.random().toString().substr(3, 5);
+                memo = memo + '4,';
+                memo = memo + orderId + ',';
+                memo = memo + that.baseToken.id;
+                let amount = parseFloat(that.orderQuantity).toFixed(that.currencyNow.asset_precision);
+                if (amount > that.userAccountInfo.exCoin) {
+                  this.$message({
+                    type: 'error',
+                    text: this.$t('message.alert_no_money'),
+                    duration: 3000
+                  });
+                } else {
+                  that.sellOrder(that.currencyNow.contractName, that.currencyNow.asset_symbol, 'btexexchange', that.currencyNow.asset_precision, amount, memo);
+                }
               } else {
-                that.buyOrder('btexexchange', amount, memo);
-              }
-            } else if (this.createType === 'sell') {
-              // 卖出挂单
-              let orderPrice = parseFloat(that.orderPrice).toFixed(6);
-              let orderId = new Date().getTime() + Math.random().toString().substr(3, 5);
-              memo = memo + '2,';
-              memo = memo + orderId + ',';
-              memo = memo + that.baseToken.id + ',';
-              memo = memo + parseFloat(orderPrice * 1000000).toFixed(0) + ',';
-              memo = memo + '6';
-              let amount = parseFloat(that.orderQuantity).toFixed(that.currencyNow.asset_precision);
-
-              let orderAmount = parseFloat(that.orderAmount).toFixed(4);
-              if (orderAmount < 0.1) {
                 this.$message({
                   type: 'error',
-                  text: this.$t('message.alert_less_than_zero_point_one'),
+                  text: this.$t('message.alert_type_error'),
                   duration: 3000
                 });
-              } else if (amount > that.userAccountInfo.exCoin) {
-                this.$message({
-                  type: 'error',
-                  text: this.$t('message.alert_no_money'),
-                  duration: 3000
-                });
-              } else {
-                that.sellOrder(that.currencyNow.contractName, that.currencyNow.asset_symbol, 'btexexchange', that.currencyNow.asset_precision, amount, memo);
               }
             } else {
               this.$message({
                 type: 'error',
-                text: this.$t('message.alert_type_error'),
+                text: this.$t('message.alert_less_than_zero'),
                 duration: 3000
               });
             }
-          } else {
-            this.$message({
-              type: 'error',
-              text: this.$t('message.alert_less_than_zero'),
-              duration: 3000
-            });
+          } else if (this.tradeType === 0) {
+            // 限价交易
+            if (this.orderQuantity > 0 && parseFloat(this.orderPrice) > 0) {
+              let memo = 'order:';
+              if (this.createType === 'buy') {
+                // 买入挂单
+                let orderPrice = parseFloat(that.orderPrice).toFixed(6);
+                let amount = parseFloat(that.orderAmount + that.feelAmount).toFixed(4);
+                let orderId = new Date().getTime() + Math.random().toString().substr(3, 5);
+                memo = memo + '1,';
+                memo = memo + orderId + ',';
+                memo = memo + that.currencyId + ',';
+                memo = memo + parseFloat(orderPrice * 1000000).toFixed(0) + ',';
+                memo = memo + '6';
+                if (amount < 0.01) {
+                  this.$message({
+                    type: 'error',
+                    text: this.$t('message.alert_less_than_zero_point_one'),
+                    duration: 3000
+                  });
+                } else if (amount > that.userAccountInfo.eos) {
+                  this.$message({
+                    type: 'error',
+                    text: this.$t('message.alert_no_money'),
+                    duration: 3000
+                  });
+                } else {
+                  that.buyOrder('btexexchange', amount, memo);
+                }
+              } else if (this.createType === 'sell') {
+                // 卖出挂单
+                let orderPrice = parseFloat(that.orderPrice).toFixed(6);
+                let orderId = new Date().getTime() + Math.random().toString().substr(3, 5);
+                memo = memo + '2,';
+                memo = memo + orderId + ',';
+                memo = memo + that.baseToken.id + ',';
+                memo = memo + parseFloat(orderPrice * 1000000).toFixed(0) + ',';
+                memo = memo + '6';
+                let amount = parseFloat(that.orderQuantity).toFixed(that.currencyNow.asset_precision);
+
+                let orderAmount = parseFloat(that.orderAmount).toFixed(4);
+                if (orderAmount < 0.01) {
+                  this.$message({
+                    type: 'error',
+                    text: this.$t('message.alert_less_than_zero_point_one'),
+                    duration: 3000
+                  });
+                } else if (amount > that.userAccountInfo.exCoin) {
+                  this.$message({
+                    type: 'error',
+                    text: this.$t('message.alert_no_money'),
+                    duration: 3000
+                  });
+                } else {
+                  that.sellOrder(that.currencyNow.contractName, that.currencyNow.asset_symbol, 'btexexchange', that.currencyNow.asset_precision, amount, memo);
+                }
+              } else {
+                this.$message({
+                  type: 'error',
+                  text: this.$t('message.alert_type_error'),
+                  duration: 3000
+                });
+              }
+            } else {
+              this.$message({
+                type: 'error',
+                text: this.$t('message.alert_less_than_zero'),
+                duration: 3000
+              });
+            }
           }
         } else {
           this.$message({
@@ -1436,7 +1546,7 @@
           box-sizing: border-box;
           .full-left-top {
             display: flex;
-            height: 380px;
+            height: 430px;
             box-sizing: border-box;
             background: #1F3548;
             flex-direction: column;
@@ -1593,6 +1703,22 @@
                     font-size: 0.625rem;
                     color: #FFFFFF;
                     /*margin-bottom: 4px;*/
+                  }
+                  .marketPrice{
+                    border: none;
+                    border-radius: 4px;
+                    height: 36px;
+                    padding: 0px 15px;
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-align: center;
+                    -ms-flex-align: center;
+                    align-items: center;
+                    font-size: 13px;
+                    background: #182937;
+                    opacity: 0.4;
+                    color: #FFFFFF;
                   }
                 }
               }
@@ -1884,7 +2010,7 @@
           box-sizing: border-box;
           .full-left-top {
             display: flex;
-            height: 380px;
+            height: 430px;
             box-sizing: border-box;
             background: #ffffff;
             flex-direction: column;
@@ -2044,6 +2170,16 @@
                     font-size: 0.625rem;
                     color: #878787;
                     /*margin-bottom: 4px;*/
+                  }
+                  .marketPrice{
+                    border: 1px solid #E2E2E2;
+                    border-radius: 4px;
+                    height: 32px;
+                    padding: 0px 15px;
+                    display: flex;
+                    align-items: center;
+                    font-size: 13px;
+                    justify-content: center;
                   }
                 }
               }

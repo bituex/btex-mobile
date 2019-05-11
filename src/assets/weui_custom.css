@@ -17,8 +17,8 @@
   opacity: 0.8;
 }
 .light .weui-tabbar__label{
-  color: #C3CED2;
-  opacity: 0.8;
+  color: #829297;
+  opacity: 1;
 }
 .weui-tabbar__icon{
   width: 18px;
@@ -26,7 +26,7 @@
   padding: 5px;
 }
 .weui-tabbar__item.weui-bar__item_on .weui-tabbar__icon, .weui-tabbar__item.weui-bar__item_on .weui-tabbar__icon > i, .weui-tabbar__item.weui-bar__item_on .weui-tabbar__label {
-  color: #F9AA44;
+  color: #F7971D;
 }
 .dark .weui-progress__bar{
   background-color: #2D4757;

@@ -21,7 +21,6 @@ export default {
       window.localStorage.setItem('theme', this.$store.state.theme);
     }
     // 设置用户的语言
-    console.log(util.getUrlParam('locale'));
     let lang = util.getUrlParam('locale') || navigator.language || navigator.userLanguage;
     lang = lang.substr(0, 2);
     this.$store.dispatch('setLang', lang);

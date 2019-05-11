@@ -63,7 +63,6 @@
     watch: {
       identity: function (newIdentity) {
         if (newIdentity) {
-          // console.log(newIdentity);
           var account = newIdentity.accounts.find(x => x.blockchain === 'eos');
           this.account = account;
           this.getEntrust(account.name);
@@ -173,7 +172,6 @@
       },
       megerData() {
         var tokens = this.contractCoins;
-        console.log(tokens);
         if (tokens && tokens.length > 0) {
           var userSellOrders = this.sellOrder;
           var userBuyOrders = this.buyOrder;

@@ -57,7 +57,6 @@ export default {
         ]
       }
     ).then(result => {
-      // console.log(result);
     });
   },
   // 获取BT币种

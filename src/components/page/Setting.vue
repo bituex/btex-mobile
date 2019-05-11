@@ -96,36 +96,12 @@
           {
             label: that.$t('message.cancel'),
             onClick: function () {
-              console.log('cancel');
             }
           }
         ], {
           onClose: function() {
-            console.log('close');
           }
         });
-        // this.weui.picker([{
-        //     label: '中文',
-        //     value: 'cn'
-        //   }, {
-        //     label: 'English',
-        //     value: 'en'
-        //   }], {
-        //     onChange: function (result) {
-        //       console.log(result[0].value);
-        //     },
-        //     onConfirm: function (result) {
-        //       console.log(result[0].value);
-        //       if (result[0].value === 'cn') {
-        //         that.$i18n.locale = 'CN';
-        //       } else if (result[0].value === 'en') {
-        //         that.$i18n.locale = 'EN';
-        //       } else {
-        //         that.$i18n.locale = 'EN';
-        //       }
-        //     }
-        //   }
-        // );
       }
     },
     computed: {

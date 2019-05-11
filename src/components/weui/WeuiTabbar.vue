@@ -19,15 +19,15 @@
           <img src="./custom_img/icon_trade.png" v-else alt="" class="weui-tabbar__icon">
           <!--<span class="weui-badge weui-badge_dot" style="position: absolute;top: 0;right: -6px;"></span>-->
       </span>
-      <p class="weui-tabbar__label">{{$t("message.trade")}}</p>
+      <p class="weui-tabbar__label">{{$t("message.exchange")}}</p>
     </router-link>
-    <router-link to = "/invest" class = "weui-tabbar__item" active-class = "weui-bar__item_on">
+    <a href= "http://bituex.rajasoft.cn/m/" class = "weui-tabbar__item" active-class = "weui-bar__item_on">
       <span style="display: inline-block;position: relative;">
-          <img src="./custom_img/icon_invest_on.png" v-if="currentSelect=='invest'" alt="" class="weui-tabbar__icon">
-          <img src="./custom_img/icon_invest.png" v-else alt="" class="weui-tabbar__icon">
+          <img src="./custom_img/icon_fiat_on.png" v-if="currentSelect=='invest'" alt="" class="weui-tabbar__icon">
+          <img src="./custom_img/icon_fiat.png" v-else alt="" class="weui-tabbar__icon">
       </span>
-      <p class="weui-tabbar__label">{{$t("message.bonus")}}</p>
-    </router-link>
+      <p class="weui-tabbar__label">{{$t("message.fiat")}}</p>
+    </a>
     <router-link to = "/my" class = "weui-tabbar__item" active-class = "weui-bar__item_on">
       <img src="./custom_img/icon_my_on.png" v-if="currentSelect=='my'" alt="" class="weui-tabbar__icon">
       <img src="./custom_img/icon_my.png" v-else alt="" class="weui-tabbar__icon">
@@ -51,14 +51,11 @@ export default {
   watch: {
     $route(to, from) {
       var path = to.path;
-      console.log(path);
       if (path.indexOf('/market') !== -1) {
         this.currentSelect = 'market';
       } else if (path.indexOf('/trade') !== -1) {
         this.tradeUrl = path;
         this.currentSelect = 'trade';
-      } else if (path.indexOf('/invest') !== -1) {
-        this.currentSelect = 'invest';
       } else if (path.indexOf('/my') !== -1) {
         this.currentSelect = 'my';
       } else {

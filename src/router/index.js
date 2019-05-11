@@ -15,7 +15,7 @@ import UpCoinPage from '@/components/page/UpCoin';
 import CoinList from '@/components/page/CoinList';
 import About from '@/components/page/About';
 import CoinCost from '@/components/page/CoinCost';
-import WithDrawCoin from '@/components/page/WithDrawCoin';
+// import WithDrawCoin from '@/components/page/WithDrawCoin';
 
 Vue.use(Router);
 
@@ -42,14 +42,14 @@ var router = new Router({
           component: TradePage
         },
         {
-          path: '/invest',
-          component: InvestPage
-        },
-        {
           path: '/my',
           component: MyPage
         }
       ]
+    },
+    {
+      path: '/invest',
+      component: InvestPage
     },
     {
       path: '/market/chart/:currencyId?',
@@ -86,11 +86,11 @@ var router = new Router({
     {
       path: '/coincost',
       component: CoinCost
-    },
-    {
-      path: '/withdraw',
-      component: WithDrawCoin
     }
+    // {
+    //   path: '/withdraw',
+    //   component: WithDrawCoin
+    // }
   ]
 });
 

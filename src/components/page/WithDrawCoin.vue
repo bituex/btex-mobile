@@ -275,7 +275,6 @@
           defaultValue: ['EOS'],
           onConfirm: function (result) {
             that.coinName = result[0].value;
-            console.log(result);
           },
           id: 'singleLinePicker'
         });

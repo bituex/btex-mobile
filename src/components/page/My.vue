@@ -103,9 +103,14 @@
     watch: {
       identity: function (newIdentity) {
         if (newIdentity) {
-          // console.log(newIdentity);
           let account = newIdentity.accounts.find(x => x.blockchain === 'eos');
           this.account = account;
+          // 获取币种
+          if (this.contractCoins && this.serverCoins && this.costCoins) {
+            this.mergeData(this.contractCoins, this.serverCoins, this.costCoins);
+          } else {
+            this.getCoins();
+          }
         }
       },
       contractCoins: function (newCoin) {
@@ -208,7 +213,6 @@
         });
         var p2 = new Promise(function (resolve, reject) {
           that.selfUtil.apiAxios('POST', that.selfUtil.host + '/service/api/currencies', {'params': {}}, res => {
-            // console.log(res);
             if (res.result.error === 0) {
               // 获取成功， 拼接，链上数据
               resolve(res.result.records);
@@ -310,7 +314,6 @@
           // 总估值
           that.valuation = valuation.toFixed(4);
           that.loadingValuation = false;
-          // console.log(this.blances);
           // 每个币种估值
           showList.forEach(function (item) {
             let blance = Enumerable.from(that.blances).singleOrDefault(function (x) {
@@ -359,8 +362,6 @@
       }
     },
     created() {
-      // 设置标题
-      // document.title = this.$t('message.my');
       // 获取账号详情
       if (this.identity) {
         let account = this.identity.accounts.find(x => x.blockchain === 'eos');
@@ -372,16 +373,16 @@
           this.getCoins();
         }
       } else {
-        var that = this;
-        this.weui.alert(this.$t('message.alert_please_log_in_first'), {
-          buttons: [{
-            label: that.$t('message.confirm'),
-            type: 'primary',
-            onClick: function () {
-              that.$router.replace('/');
-            }
-          }]
-        });
+        // var that = this;
+        // this.weui.alert(this.$t('message.alert_please_log_in_first'), {
+        //   buttons: [{
+        //     label: that.$t('message.confirm'),
+        //     type: 'primary',
+        //     onClick: function () {
+        //       that.$router.replace('/');
+        //     }
+        //   }]
+        // });
       }
     }
   };

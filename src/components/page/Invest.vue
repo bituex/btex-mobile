@@ -180,7 +180,6 @@
     watch: {
       identity: function (newIdentity) {
         if (newIdentity) {
-          // console.log(newIdentity);
           let account = newIdentity.accounts.find(x => x.blockchain === 'eos');
           this.account = account;
         }

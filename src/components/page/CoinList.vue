@@ -2,7 +2,7 @@
   <div id="master" :class="theme === 'light' ? 'light' : 'dark'">
     <div class="page">
       <div class="add-coin">
-        <button class="weui-btn" @click="addCoinAction">{{$t("message.up_coin_self")}}</button>
+        <button class="weui-btn" @click="toUpCoin">{{$t("message.up_coin_self")}}</button>
       </div>
       <div class="coins">
         <!--<div class="coin">-->
@@ -63,6 +63,22 @@
         <div class="actionBtn mortgage" @click="transferCoin">{{$t("message.confirm")}}</div>
       </div>
     </el-dialog>
+    <el-dialog title="" :visible.sync="dialogIntroVisible" @close="upCoinAction">
+      尊敬的客户，您好：<br/>
+      <br/>
+      BTEX实施去中心化的管理方案，可由个人或项目方自主上币，相关权益和规则声明如下：
+      <br/>
+      1、个人自主上币<br/>
+      1）个人按照上币规则填写资料，并抵押一定数量的BT后提报上币。BTEX合约自动审核后，可获得该币种交易的维护权，能够进行转让和下架。同时，该币种交易手续费用的20%分红，以BT的形式实时发送到上币账号中。<br/>
+      2）个人上币后，该币的项目方可获得交易手续费用的10%分红，以BT的形式进行实时发送到合约账号中。<br/>
+      3）项目方拥有代币管理权，有权对对应币种进行下币和转让维护人的操作。<br/>
+      2、项目方自主上币<br/>
+      项目方按照规则填写资料，若上币账号与合约账号一致，免BT抵押，直接提报上币。BTEX合约自动审核后，获得该币种交易手续费用的30%分红，以BT的形式实时发送到项目方合约账号中。<br/>
+      <br/>
+      所有分红均随着该币的每一次交易实时到账，全部上链可查。欢迎体验！
+      <br/><br/>
+      <button @click="toUpCoin2" class="weui-btn" style="background-color: #F9AA44;color: #ffffff;">已知晓，去上币</button>
+    </el-dialog>
   </div>
 </template>
 
@@ -83,8 +99,9 @@
           newCreator: '',
           error: ''
         },
-        dialogTransVisible: false
+        dialogTransVisible: false,
         // 是否登录
+        dialogIntroVisible: false
       };
     },
     components: {
@@ -94,12 +111,11 @@
     watch: {
       identity: function (newIdentity) {
         if (newIdentity) {
-          // console.log(newIdentity);
           var account = newIdentity.accounts.find(x => x.blockchain === 'eos');
           this.account = account;
           if (this.contractCoins) {
             this.coins = Enumerable.from(this.contractCoins)
-              .where(function (x) { return x.creator === account.name; }).toArray();
+              .where(function (x) { return x.creator === account.name || x.contractName === account.name; }).toArray();
             // this.coins = this.contractCoins;
           }
         }
@@ -108,7 +124,7 @@
         if (newCoins && this.account) {
           var accountName = this.account.name;
           this.coins = Enumerable.from(newCoins)
-            .where(function (x) { return x.creator === accountName; }).toArray();
+            .where(function (x) { return x.creator === accountName || x.contractName === accountName; }).toArray();
           // this.coins = newCoins;
         }
       }
@@ -128,7 +144,11 @@
       }
     },
     methods: {
-      addCoinAction() {
+      toUpCoin() {
+        this.dialogIntroVisible = true;
+      },
+      toUpCoin2() {
+        this.dialogIntroVisible = false;
         this.$router.push('/upcoin');
       },
       transferAction(id) {
@@ -146,13 +166,11 @@
               label: that.$t('message.cancel'),
               type: 'default',
               onClick: function() {
-                console.log('no');
               }
             }, {
               label: that.$t('message.confirm'),
               type: 'primary',
               onClick: function() {
-                console.log('yes');
                 if (that.scatter) {
                   var eos = that.scatter.eos(that.selfUtil.network, Eos, {expireInSeconds: 60});
                   var account = that.scatter.identity.accounts.find(x => x.blockchain === 'eos');
@@ -258,7 +276,6 @@
             label: that.$t('message.confirm'),
             type: 'primary',
             onClick: function() {
-              console.log('yes');
               if (that.scatter) {
                 var eos = that.scatter.eos(that.selfUtil.network, Eos, {expireInSeconds: 60});
                 var account = that.scatter.identity.accounts.find(x => x.blockchain === 'eos');
@@ -397,7 +414,7 @@
         // 显示币种
         if (this.contractCoins) {
           this.coins = Enumerable.from(this.contractCoins)
-            .where(function (x) { return x.creator === account.name; }).toArray();
+            .where(function (x) { return x.creator === account.name || x.contractName === account.name; }).toArray();
           // this.coins = this.contractCoins;
         } else {
           this.getCoins();

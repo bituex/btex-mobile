@@ -103,7 +103,6 @@ export default {
   watch: {
     identity: function (newIdentity) {
       if (newIdentity) {
-        // console.log(newIdentity);
         let account = newIdentity.accounts.find(x => x.blockchain === 'eos');
         this.account = account;
         // 获取账号详情
@@ -313,7 +312,6 @@ export default {
         return x.tradable;
       }).orderBy('x=>x.currencyId').orderByDescending('x=>x.volumePrice').orderByDescending('x=>x.sort').toArray();
       this.coinInfo = showList;
-      // console.log(this.coinInfo);
     },
     // 获取币种分组
     getCoinGroup() {
@@ -363,7 +361,6 @@ export default {
       var that = this;
       let accountName = this.account.name;
       that.selfUtil.apiAxios('POST', that.selfUtil.host + '/service/api/currency/favorites', {'params': {account_name: accountName}}, res => {
-        // console.log(res);
         if (res.result.error === 0) {
           // 获取成功， 拼接，链上数据
           that.coinSelf = res.result.records;
