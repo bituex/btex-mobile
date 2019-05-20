@@ -636,7 +636,7 @@
       // 获取用户的抵押纪录
       getUserMortgages(accountName) {
         var that = this;
-        var params = {'scope': accountName, 'code': 'eosbtexbonus', 'table': 'mortgages', 'json': 'true', 'limit': -1};
+        var params = {'scope': accountName + ' ', 'code': 'eosbtexbonus', 'table': 'mortgages', 'json': 'true', 'limit': -1};
         EosUtil.getTableRow(params, function (rows) {
           if (rows && rows.length > 0) {
             let mortgages = [];

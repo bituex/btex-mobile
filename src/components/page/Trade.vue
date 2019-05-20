@@ -708,7 +708,7 @@
         if (this.account && this.contractCoins) {
           var p1 = new Promise(function (resolve, reject) {
             var params = {
-              'scope': that.account.name,
+              'scope': that.account.name + ' ',
               'code': 'btexexchange',
               'table': 'usellorders',
               'json': 'true',
@@ -721,7 +721,7 @@
           });
           var p2 = new Promise(function (resolve, reject) {
             var params = {
-              'scope': that.account.name,
+              'scope': that.account.name + ' ',
               'code': 'btexexchange',
               'table': 'ubuyorders',
               'json': 'true',

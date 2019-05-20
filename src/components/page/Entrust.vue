@@ -127,7 +127,7 @@
         var that = this;
         var p1 = new Promise(function (resolve, reject) {
           var params = {
-            'scope': account,
+            'scope': account + ' ',
             'code': 'btexexchange',
             'table': 'usellorders',
             'json': 'true',
@@ -140,7 +140,7 @@
         });
         var p2 = new Promise(function (resolve, reject) {
           var params = {
-            'scope': account,
+            'scope': account + ' ',
             'code': 'btexexchange',
             'table': 'ubuyorders',
             'json': 'true',
