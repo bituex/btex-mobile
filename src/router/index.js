@@ -96,6 +96,8 @@ var router = new Router({
 
 router.beforeEach((to, from, next) => {
   window.scrollTo(0, 0);
+  // 统计pv
+  if (to.path) window._hmt.push(['_trackPageview', '/#' + to.fullPath]);
   next();
 });
 
