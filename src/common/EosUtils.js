@@ -157,6 +157,9 @@ export default {
           } else {
             resolve(0);
           }
+        }).catch(err => {
+          console.log(err);
+          resolve(0);
         });
       });
       promiss.push(p);
