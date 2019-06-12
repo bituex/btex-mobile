@@ -7,6 +7,34 @@ export default {
     }
     return true;
   },
+  copyToClipboard: function (text) {
+    if (text.indexOf('-') !== -1) {
+      let arr = text.split('-');
+      text = arr[0] + arr[1];
+    }
+    var textArea = document.createElement('textarea');
+    textArea.style.position = 'fixed';
+    textArea.style.top = '0';
+    textArea.style.left = '0';
+    textArea.style.width = '2em';
+    textArea.style.height = '2em';
+    textArea.style.padding = '0';
+    textArea.style.border = 'none';
+    textArea.style.outline = 'none';
+    textArea.style.boxShadow = 'none';
+    textArea.style.background = 'transparent';
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    try {
+      var successful = document.execCommand('copy');
+      var msg = successful ? '成功复制到剪贴板' : '该浏览器不支持点击复制到剪贴板';
+      alert(msg);
+    } catch (err) {
+      alert('该浏览器不支持点击复制到剪贴板');
+    }
+    document.body.removeChild(textArea);
+  },
   apiAxios: function (method, url, params, success, error) {
     let lang = window.lang;
     if (lang === 'CN') {
@@ -32,35 +60,6 @@ export default {
       .catch(function (err) {
         if (err.message) {
           // alert(err.message);
-        }
-      });
-  },
-  apiAxiosOld: function (method, url, params, success, error) {
-    axios({
-      method: method,
-      url: url,
-      timeout: 20000,
-      data: method === 'POST' || method === 'PUT' ? params : null,
-      params: method === 'GET' || method === 'DELETE' ? params : null,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      transformRequest: [function (data) {
-        let ret = '';
-        for (let it in data) {
-          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
-        }
-        return ret;
-      }]
-    })
-      .then(function (res) {
-        var returnData = res.data;
-        success(returnData);
-      })
-      .catch(function (err) {
-        if (err.message) {
-          // alert(err.message);
-          console.log(err.message);
         }
       });
   },

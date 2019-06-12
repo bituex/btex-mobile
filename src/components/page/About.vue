@@ -14,6 +14,8 @@
         <p class="version">{{$t("message.version_current")}}：1.0.0</p>
         <p class="slogan-cn">全新一代EOS去中心化交易所</p>
         <p class="slogan-en">New Generation Decentralization Exchange on EOS</p>
+        <p class="cs-wechart">客服微信：qchw17783 <img @click="copy('qchw17783')" src="../../assets/img/copy.svg"/></p>
+        <p class="telegram">电报群：https://t.im/btexorg <img @click="copy('https://t.im/btexorg')" src="../../assets/img/copy.svg"/></p>
       </div>
     </div>
   </div>
@@ -22,7 +24,11 @@
 <script>
   export default {
     name: 'About',
-    methods: {},
+    methods: {
+      copy(txt) {
+        this.selfUtil.copyToClipboard(txt);
+      }
+    },
     computed: {
       theme () {
         return this.$store.state.theme;
@@ -65,14 +71,33 @@
       text-align: center;
       .version {
         font-size: 1rem;
+        display: none;
       }
       .slogan-cn {
         font-size: 0.875rem;
         margin-top: 20px;
+        display: none;
       }
       .slogan-en {
         font-size: 0.625rem;
         margin-bottom: 20px;
+        display: none;
+      }
+      .cs-wechart {
+        font-size: 0.875rem;
+        margin-bottom: 10px;
+        img{
+          width: 18px;
+          vertical-align: middle;
+        }
+      }
+      .telegram {
+        font-size: 0.875rem;
+        margin-bottom: 20px;
+        img{
+          width: 18px;
+          vertical-align: middle;
+        }
       }
     }
   }
@@ -103,14 +128,33 @@
       text-align: center;
       .version {
         font-size: 1rem;
+        display: none;
       }
       .slogan-cn {
         font-size: 0.875rem;
         margin-top: 20px;
+        display: none;
       }
       .slogan-en {
         font-size: 0.625rem;
         margin-bottom: 20px;
+        display: none;
+      }
+      .cs-wechart {
+        font-size: 0.875rem;
+        margin-bottom: 10px;
+        img{
+          width: 18px;
+          vertical-align: middle;
+        }
+      }
+      .telegram {
+        font-size: 0.875rem;
+        margin-bottom: 20px;
+        img{
+          width: 18px;
+          vertical-align: middle;
+        }
       }
     }
   }
